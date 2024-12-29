@@ -31,7 +31,7 @@ app.use(session({
 //Middleware
 app.use(cors({
   credentials: true,
-  origin: 'http://localhost:3000'
+  origin: 'https://web-app-auth-seven.vercel.app/'
 }));
 app.use(express.json());
 app.use('/patients', patientRoutes);
@@ -39,7 +39,7 @@ app.use(userRoutes);
 app.use(authRoutes);
 
 // Sync database
-sequelize.sync({ force: true }) // force: false akan mencegah penghapusan tabel yang sudah ada
+sequelize.sync({ force: false }) // force: false akan mencegah penghapusan tabel yang sudah ada
   .then(() => {
     console.log('Database synchronized');
   })
@@ -50,5 +50,5 @@ sequelize.sync({ force: true }) // force: false akan mencegah penghapusan tabel 
 store.sync();
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost ${PORT}`);
+    console.log(`Server is running on PORT ${PORT}`);
 });
