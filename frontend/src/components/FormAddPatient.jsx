@@ -17,7 +17,7 @@ const FormAddPatient = () => {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:5000/patients",formData);
+    await axios.post("web-app-auth-production.up.railway.app/patients",formData);
     alert('Pasien Berhasil di Tambahkan');
     setFormData({
     //   medicalRecordNumber: '',
