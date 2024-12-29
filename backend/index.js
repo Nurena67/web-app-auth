@@ -13,26 +13,26 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8080;
 //Middleware
-// app.use(cors({
-  //   credentials: true,
-  //   origin: 'https://web-app-auth-seven.vercel.app'
+app.use(cors(
+  // {credentials: true,
+    // origin: 'https://web-app-auth-seven.vercel.app'}
+    ));
+  
+  // const allowedOrigins = [
+  //   'http://localhost:3000',
+  //   'https://web-app-auth-seven.vercel.app'
+  // ];
+  
+  // app.use(cors({
+  //   origin: function (origin, callback) {
+  //     if (allowedOrigins.includes(origin) || !origin) {
+  //       callback(null, true);
+  //     } else {
+  //       callback(new Error('Not allowed by CORS'));
+  //     }
+  //   },
+  //   credentials: true, // Jika Anda mengirim cookie
   // }));
-  
-  const allowedOrigins = [
-    'http://localhost:3000',
-    'https://web-app-auth-seven.vercel.app'
-  ];
-  
-  app.use(cors({
-    origin: function (origin, callback) {
-      if (allowedOrigins.includes(origin) || !origin) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true, // Jika Anda mengirim cookie
-  }));
   
   const sessionStore = SequelizeStore(session.Store);
   const store = new sessionStore({
