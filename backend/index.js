@@ -31,7 +31,7 @@ app.use(session({
 //Middleware
 app.use(cors({
   credentials: true,
-  origin: 'https://web-app-auth-seven.vercel.app/'
+  origin: 'https://web-app-auth-seven.vercel.app'
 }));
 app.use(express.json());
 app.use('/patients', patientRoutes);
