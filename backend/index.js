@@ -13,10 +13,9 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8080;
 //Middleware
-app.use(cors(
-  // {credentials: true,
-    // origin: 'https://web-app-auth-seven.vercel.app'}
-    ));
+app.use(cors());
+// {credentials: true,
+  // origin: 'https://web-app-auth-seven.vercel.app'}
   
   // const allowedOrigins = [
   //   'http://localhost:3000',
@@ -63,7 +62,7 @@ sequelize.sync({ force: false }) // force: false akan mencegah penghapusan tabel
     console.log('Error syncing database: ', err);
   });
 
-store.sync();
+// store.sync();
 
 app.listen(PORT, () => {
     console.log(`Server is running on PORT ${PORT}`);
