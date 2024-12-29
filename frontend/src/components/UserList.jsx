@@ -10,12 +10,12 @@ const Userlist = () => {
   }, []);
 
   const getUsers = async () => {
-    const response = await axios.get("web-app-auth-production.up.railway.app/users");
+    const response = await axios.get("https://web-app-auth-production.up.railway.app/users");
     setUsers(response.data);
   };
 
   const deleteUser = async (userId) => {
-    await axios.delete(`web-app-auth-production.up.railway.app/users/${userId}`);
+    await axios.delete(`https://web-app-auth-production.up.railway.app/users/${userId}`);
     getUsers();
   };
 

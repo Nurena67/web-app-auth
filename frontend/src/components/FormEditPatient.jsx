@@ -18,7 +18,7 @@ const FormEditPatient = () => {
   useEffect(() => {
     const getPatientsByid = async () => {
         try {
-            const response = await axios.get(`web-app-auth-production.up.railway.app/patients/${id}`);
+            const response = await axios.get(`https://web-app-auth-production.up.railway.app/patients/${id}`);
             setFormData(response.data);  // Menyimpan data ke state
         } catch (error) {
             console.error("Error get patients:", error);
@@ -29,7 +29,7 @@ const FormEditPatient = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.put(`web-app-auth-production.up.railway.app/patients/${id}`,formData);
+    await axios.put(`https://web-app-auth-production.up.railway.app/patients/${id}`,formData);
     alert('Pasien Berhasil di Update');
     backDetail();
   };

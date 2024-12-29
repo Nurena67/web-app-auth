@@ -15,7 +15,7 @@ const FormEditUser = () => {
   useEffect(() => {
     const getUserById = async () => {
       try {
-        const response = await axios.get(`web-app-auth-production.up.railway.app/users/${id}`);
+        const response = await axios.get(`https://web-app-auth-production.up.railway.app/users/${id}`);
         setName(response.data.name);
         setEmail(response.data.email);
         setRole(response.data.role);
@@ -31,7 +31,7 @@ const FormEditUser = () => {
   const updateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`web-app-auth-production.up.railway.app/users/${id}`, {
+      await axios.put(`https://web-app-auth-production.up.railway.app/users/${id}`, {
         name: name,
         email: email,
         password: password,
