@@ -1,0 +1,13 @@
+GET https://web-app-auth.up.railway.app/users
+
+###
+POST https://web-app-auth.up.railway.app/users
+Content-Type: application/json
+
+{
+    "name":"Rizky",
+    "email":"admin@gmail.com",
+    "password":"12345678",
+    "confPassword":"12345678",
+    "role":"admin"
+}
