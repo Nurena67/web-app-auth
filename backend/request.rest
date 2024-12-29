@@ -26,3 +26,6 @@ GET https://web-app-auth.up.railway.app/me
 
 ###
 GET https://web-app-auth.up.railway.app/patients
+
+###
+DELETE  https://web-app-auth.up.railway.app/logout
