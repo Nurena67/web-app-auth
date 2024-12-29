@@ -39,7 +39,7 @@ app.use(userRoutes);
 app.use(authRoutes);
 
 // Sync database
-sequelize.sync({ force: false }) // force: false akan mencegah penghapusan tabel yang sudah ada
+sequelize.sync({ force: true }) // force: false akan mencegah penghapusan tabel yang sudah ada
   .then(() => {
     console.log('Database synchronized');
   })
