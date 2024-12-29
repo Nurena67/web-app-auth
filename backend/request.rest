@@ -5,9 +5,24 @@ POST https://web-app-auth.up.railway.app/users
 Content-Type: application/json
 
 {
-    "name":"Rizky",
-    "email":"admin@gmail.com",
+    "name":"Rizky 2",
+    "email":"user@gmail.com",
     "password":"12345678",
     "confPassword":"12345678",
-    "role":"admin"
+    "role":"user"
 }
+
+###
+POST https://web-app-auth.up.railway.app/login
+Content-Type: application/json
+
+{
+    "email":"user@gmail.com",
+    "password":"12345678"
+}
+
+###
+GET https://web-app-auth.up.railway.app/me
+
+###
+GET https://web-app-auth.up.railway.app/patients

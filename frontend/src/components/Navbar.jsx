@@ -27,7 +27,7 @@ const Navbar = () => {
           </NavLink>
 
           <a
-            href="!#"
+            href="/dashboard"
             role="button"
             className="navbar-burger burger"
             aria-label="menu"

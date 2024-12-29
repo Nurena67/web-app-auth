@@ -8,7 +8,7 @@ const PatientList = () => {
     useEffect(() => {
         const getPatients = async () => {
             try {
-                const response = await axios.get("https://web-app-auth-production.up.railway.app/patients");
+                const response = await axios.get("https://web-app-auth.up.railway.app/patients");
                 setPatients(response.data);  // Menyimpan data ke state
             } catch (error) {
                 console.error("Error get patients:", error);

@@ -9,7 +9,7 @@ const FormDetailPatient = () => {
         useEffect(() => {
             const getPatients = async () => {
                 try {
-                    const response = await axios.get("https://web-app-auth-production.up.railway.app/patients");
+                    const response = await axios.get("https://web-app-auth.up.railway.app/patients");
                     setPatients(response.data);  // Menyimpan data ke state
                 } catch (error) {
                     console.error("Error get patients:", error);
@@ -20,7 +20,7 @@ const FormDetailPatient = () => {
 
         const handleDelete = async (medicalRecordNumber) => {
             try {
-              await axios.delete(`https://web-app-auth-production.up.railway.app/patients/${medicalRecordNumber}`)
+              await axios.delete(`https://web-app-auth.up.railway.app/patients/${medicalRecordNumber}`)
               alert("Pasien berhasil dihapus");
               navigate('/patients');
             } catch (error) {

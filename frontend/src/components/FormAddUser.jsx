@@ -14,7 +14,7 @@ const FormAddUser = () => {
   const saveUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://web-app-auth-production.up.railway.app/users", {
+      await axios.post("https://web-app-auth.up.railway.app/users", {
         name: name,
         email: email,
         password: password,
