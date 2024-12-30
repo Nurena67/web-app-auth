@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "./axios.js";
+import axios from "axios";
 
 const initialState = {
     user: null,
@@ -28,7 +29,7 @@ export const LoginUser = createAsyncThunk("user/LoginUser", async(user, thunkAPI
 
 export const getMe = createAsyncThunk("user/getMe", async(_, thunkAPI) => {
     try {
-        const response = await axiosInstance.get('/me',{
+        const response = await axios.get('https://web-app-umber-omega.vercel.app/me',{
             withCredentials: true,
         });
         return response.data;
