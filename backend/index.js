@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 
 //Middleware
 app.use(cors({
-  origin: 'https://web-app-auth-seven.vercel.app',
+  origin: 'https://web-app-umber-omega.vercel.app',
   credentials: true
 }));
 
