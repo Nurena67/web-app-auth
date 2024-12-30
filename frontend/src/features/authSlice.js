@@ -13,7 +13,7 @@ const initialState = {
 // Async Thunks
 export const login = createAsyncThunk('auth/login', async (credentials, { rejectWithValue }) => {
   try {
-    const response = await axios.post('https://web-app-umber-omega.vercel.app/login', credentials, { withCredentials: true });
+    const response = await axios.post('https://web-app-auth.up.railway.app/login', credentials, { withCredentials: true });
     return response.data; // Misalnya { user: { id, name, email } }
   } catch (error) {
     return rejectWithValue(error.response.data);
@@ -22,7 +22,7 @@ export const login = createAsyncThunk('auth/login', async (credentials, { reject
 
 export const checkLogin = createAsyncThunk('auth/checkLogin', async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get('https://web-app-umber-omega.vercel.app/me', { withCredentials: true });
+    const response = await axios.get('https://web-app-auth.up.railway.app/me', { withCredentials: true });
     return response.data; // Misalnya { user: { id, name, email } }
   } catch (error) {
     return rejectWithValue(error.response.data);
@@ -31,7 +31,7 @@ export const checkLogin = createAsyncThunk('auth/checkLogin', async (_, { reject
 
 export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
   try {
-    await axios.delete('https://web-app-umber-omega.vercel.app/logout', {}, { withCredentials: true });
+    await axios.delete('https://web-app-auth.up.railway.app/logout', {}, { withCredentials: true });
     return null; // Logout berhasil
   } catch (error) {
     return rejectWithValue(error.response.data);
