@@ -18,10 +18,12 @@ const store = new sessionStore({
   db: sequelize
 });
 
+store.sync();
+
 app.use(session({
   secret: process.env.SESS_SECRET,
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
   store: store,
   cookie: {
       httpOnly: true,
@@ -60,7 +62,7 @@ sequelize.sync({ force: false }) // force: false akan mencegah penghapusan tabel
     console.log('Error syncing database: ', err);
   });
 
-// store.sync();
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on PORT ${PORT}`);
