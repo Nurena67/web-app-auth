@@ -31,6 +31,13 @@ app.use(session({
   }
 }));
 
+app.use((req, res, next) => {
+  console.log('Session Middleware Log:');
+  console.log('Session ID:', req.session.id); // ID session
+  console.log('Session Data:', req.session); // Isi session
+  next(); // Lanjutkan ke middleware berikutnya
+});
+
 //Middleware
 app.use(cors({
   origin: 'https://web-app-auth-seven.vercel.app',
