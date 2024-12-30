@@ -39,10 +39,12 @@ app.use((req, res, next) => {
 });
 
 //Middleware
-app.use(cors({
+const corsOptions = {
   origin: 'https://web-app-umber-omega.vercel.app',
   credentials: true
-}));
+};
+
+app.use('/*',cors(corsOptions))
 
 app.use(express.json());
 app.use('/patients', patientRoutes);
