@@ -3,7 +3,7 @@ import Layout from "./Layout";
 import PatientList from "../components/PatientList";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getMe } from "../features/authSlice";
+import { checkLogin } from "../features/authSlice";
 
 const Patients = () => {
     const dispatch = useDispatch();
@@ -11,7 +11,7 @@ const Patients = () => {
     const { isError } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(getMe());
+    dispatch(checkLogin());
   }, [dispatch]);
 
   useEffect(() => {

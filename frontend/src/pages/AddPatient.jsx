@@ -3,7 +3,7 @@ import Layout from "./Layout";
 import FormAddPatient from "../components/FormAddPatient";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getMe } from "../features/authSlice";
+import { checkLogin } from "../features/authSlice";
 
 const AddPatient = () => {
   const dispatch = useDispatch();
@@ -11,7 +11,7 @@ const AddPatient = () => {
   const { isError } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(getMe());
+    dispatch(checkLogin());
   }, [dispatch]);
 
   useEffect(() => {

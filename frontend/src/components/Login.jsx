@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { LoginUser, reset } from "../features/authSlice";
+import { login, reset } from "../features/authSlice.js";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -21,7 +21,7 @@ const Login = () => {
 
   const Auth = (e) => {
     e.preventDefault();
-    dispatch(LoginUser({ email, password }));
+    dispatch(login({ email, password }));
   };
 
   return (
