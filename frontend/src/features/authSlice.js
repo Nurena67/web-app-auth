@@ -4,7 +4,7 @@ import axios from 'axios';
 // Async Thunks
 export const login = createAsyncThunk('auth/login', async ({email, password}, { rejectWithValue }) => {
   try {
-    const response = await axios.post('http://localhost:8080/login', {
+    const response = await axios.post('https://web-app-auth.up.railway.app/login', {
       email,
       password
     });
@@ -19,7 +19,7 @@ export const login = createAsyncThunk('auth/login', async ({email, password}, { 
 export const checkLogin = createAsyncThunk('auth/checkLogin', async (_, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.get('http://localhost:8080/me', {
+    const response = await axios.get('https://web-app-auth.up.railway.app/me', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -34,7 +34,7 @@ export const logout = createAsyncThunk('auth/logout', async () => {
   try {
     const token = localStorage.getItem("token");
 
-    await axios.delete("http://localhost:8080/logout", {
+    await axios.delete("https://web-app-auth.up.railway.app/logout", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
