@@ -17,7 +17,7 @@ const FormDetailPatient = () => {
           const response = await axios.get("https://web-app-auth.up.railway.app/patients", {
               headers: {
                   Authorization: `Bearer ${token}`,
-              },
+              },withCredentials: true
           });
           setPatients(response.data);
       } catch (error) {
@@ -39,8 +39,8 @@ const FormDetailPatient = () => {
       await axios.delete(`https://web-app-auth.up.railway.app/patients/${medicalRecordNumber}`,{
         headers:{
           Authorization: `Bearer ${token}`
-        }
-      })
+        }, withCredentials: true
+      });
       setPatients(patients.filter(patient => patient.medicalRecordNumber !== medicalRecordNumber));
       alert("Pasien berhasil dihapus");
       navigate('/patients');

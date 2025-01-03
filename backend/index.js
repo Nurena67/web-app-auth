@@ -13,12 +13,12 @@ const PORT = process.env.PORT || 8080;
 
 
 //Middleware
-// const corsOptions = {
-//   origin: 'https://web-app-umber-omega.vercel.app/',
-//   credentials: true
-// };
+const corsOptions = {
+  origin: 'https://web-app-umber-omega.vercel.app',
+  credentials: true
+};
 
-app.use(cors());
+app.use(cors(corsOptions))
 
 app.use(express.json());
 app.use('/patients', patientRoutes);

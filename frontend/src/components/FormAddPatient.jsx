@@ -25,7 +25,7 @@ const FormAddPatient = () => {
         await axios.post("https://web-app-auth.up.railway.app/patients",formData,{
         headers:{
             Authorization: `Bearer ${token}`,
-        }
+        }, withCredentials: true
     });
         alert('Pasien Berhasil di Tambahkan');
         setFormData({

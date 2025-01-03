@@ -7,6 +7,8 @@ export const login = createAsyncThunk('auth/login', async ({email, password}, { 
     const response = await axios.post('https://web-app-auth.up.railway.app/login', {
       email,
       password
+    }, {
+      withCredentials: true
     });
     const token = response.data.token;
     localStorage.setItem('token',token);
@@ -22,7 +24,7 @@ export const checkLogin = createAsyncThunk('auth/checkLogin', async (_, { reject
     const response = await axios.get('https://web-app-auth.up.railway.app/me', {
       headers: {
         Authorization: `Bearer ${token}`,
-      },
+      }, withCredentials: true
     });
     return { user : response.data }; 
   } catch (error) {
@@ -37,7 +39,7 @@ export const logout = createAsyncThunk('auth/logout', async () => {
     await axios.delete("https://web-app-auth.up.railway.app/logout", {
       headers: {
         Authorization: `Bearer ${token}`,
-      },
+      }, withCredentials: true
     });
 
     // Menghapus token dari localStorage

@@ -17,7 +17,7 @@ const FormEditUser = () => {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.get(`https://web-app-auth.up.railway.app/users/${id}`, {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: { Authorization: `Bearer ${token}` }, withCredentials: true
         });
         setName(response.data.name);
         setEmail(response.data.email);
@@ -42,7 +42,7 @@ const FormEditUser = () => {
         confPassword: confPassword,
         role: role,
       }, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` }, withCredentials: true
       });
       navigate("/users");
     } catch (error) {

@@ -16,7 +16,7 @@ const Userlist = () => {
         const response = await axios.get("https://web-app-auth.up.railway.app/users", {
           headers: {
             Authorization : `Bearer ${token}`
-          }
+          }, withCredentials: true
         });
         setUsers(response.data);
       } catch (error) {
@@ -40,7 +40,7 @@ const Userlist = () => {
       await axios.delete(`https://web-app-auth.up.railway.app/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
-        },
+        }, withCredentials: true
       });
       setUsers(users.filter(user => user.userId !== userId));
       alert('Patient deleted successfully!');

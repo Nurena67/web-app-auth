@@ -21,7 +21,7 @@ const FormEditPatient = () => {
             const token = localStorage.getItem('token');
             const response = await axios.get(`https://web-app-auth.up.railway.app/patients/${id}`, {
                 headers: 
-                { Authorization: `Bearer ${token}` }
+                { Authorization: `Bearer ${token}` } , withCredentials: true
         });
             setFormData(response.data);
         } catch (error) {
@@ -37,7 +37,7 @@ const FormEditPatient = () => {
         const token = localStorage.getItem('token');
         await axios.put(`https://web-app-auth.up.railway.app/patients/${id}`,formData , {
             headers: 
-            { Authorization: `Bearer ${token}` }
+            { Authorization: `Bearer ${token}` }, withCredentials: true
         });
         alert('Pasien Berhasil di Update');
         backDetail();

@@ -15,8 +15,8 @@ const PatientList = () => {
                 }
                 const response = await axios.get("https://web-app-auth.up.railway.app/patients", {
                     headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                        Authorization: `Bearer ${token}`
+                    }, withCredentials: true
                 });
                 setPatients(response.data);
             } catch (error) {

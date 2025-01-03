@@ -27,7 +27,7 @@ const FormAddUser = () => {
       },{
         headers:{
           Authorization: `Bearer ${token}`,
-        },
+        }, withCredentials: true
       }
     );
     alert('User added successfully!');
