@@ -1,19 +1,19 @@
 import Patient from '../models/patientModel.js';
 
-// Read All
+// Get Patients
 export const getPatients = async (req, res) => {
   try {
     const patients = await Patient.findAll();
-    const patientsData = patients.map(patient => patient.get());  // Mengambil data bersih untuk setiap pasien
-    console.log("All Patients Fetched:", patientsData); // Log data pasien
-    res.status(200).json(patientsData); // Mengirim data dalam format JSON
+    const patientsData = patients.map(patient => patient.get());
+    console.log("All Patients Fetched:", patientsData);
+    res.status(200).json(patientsData);
   } catch (err) {
     console.error("Error fetching patients:", err.message);
     res.status(500).json({ error: err.message });
   }
 };
 
-//detail
+// Get Patient By Id
 export const getPatientDetail = async (req, res) => {
   try {
     const { medicalRecordNumber } = req.params;
@@ -25,29 +25,30 @@ export const getPatientDetail = async (req, res) => {
       return res.status(404).json({ error: 'Patient not found' });
     }
     
-    const patientData = patient.get();  // Mengambil data dalam format JSON yang bersih
-    console.log("Patient Detail Fetched:", patientData); // Log data pasien
-    res.json(patientData); // Mengirim data dalam format JSON
+    const patientData = patient.get(); 
+    console.log("Patient Detail Fetched:", patientData); 
+    res.json(patientData);
   } catch (err) {
     console.error("Error fetching patient detail:", err.message);
     res.status(500).json({ error: err.message });
   }
 };
 
-// Create
+// Create Patient
 export const createPatient = async (req, res) => {
   try {
     const patient = await Patient.create(req.body);
-    const patientData = patient.get();  // Mengambil data sebagai objek JSON bersih
-    console.log("Patient Created:", patientData); // Logging setelah pembuatan pasien
+    const patientData = patient.get();
+    console.log("Patient Created:", patientData);
     res.status(201).json(patientData);
   } catch (err) {
-    console.error("Error creating patient:", err.message); // Logging error
+    console.error("Error creating patient:", err.message);
     res.status(400).json({ error: err.message });
   }
 };
 
-// Update
+
+// Update Patient
 export const updatePatient = async (req, res) => {
   try {
     const { medicalRecordNumber } = req.params; // Mengambil ID pasien dari parameter URL
@@ -72,7 +73,7 @@ export const updatePatient = async (req, res) => {
 };
 
 
-// Delete
+// Delete Patient
 export const deletePatient = async (req, res) => {
   try {
     const { medicalRecordNumber } = req.params;

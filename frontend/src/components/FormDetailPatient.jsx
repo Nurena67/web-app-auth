@@ -4,34 +4,60 @@ import { useNavigate, Link } from 'react-router-dom';
 import "bulma/css/bulma.css"
 
 const FormDetailPatient = () => {
-        const [patients, setPatients] = useState([]);
-        const navigate = useNavigate();
-        useEffect(() => {
-            const getPatients = async () => {
-                try {
-                    const response = await axios.get("https://web-app-auth.up.railway.app/patients");
-                    setPatients(response.data);  // Menyimpan data ke state
-                } catch (error) {
-                    console.error("Error get patients:", error);
-                }
-            }
-            getPatients();
-        }, []);
+  const [patients, setPatients] = useState([]);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    const getPatients = async () => {
+      try {
+          const token = localStorage.getItem('token');
+          if (!token) {
+              throw new Error('Tidak ada token, Harap Login.!!');
+          }
+          const response = await axios.get("http://localhost:8080/patients", {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              },
+          });
+          setPatients(response.data);
+      } catch (error) {
+          console.error("Error get patients:", error);
+          if (error.response && error.response.status === 401) {
+              navigate('/login');
+          }
+      }
+    };
+  getPatients();
+  }, [navigate]);
 
-        const handleDelete = async (medicalRecordNumber) => {
-            try {
-              await axios.delete(`https://web-app-auth.up.railway.app/patients/${medicalRecordNumber}`)
-              alert("Pasien berhasil dihapus");
-              navigate('/patients');
-            } catch (error) {
-              console.error("Error deleting patient:", error);
-              alert("Gagal menghapus pasien");
+  const handleDelete = async (medicalRecordNumber) => {
+    try {
+      const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('Tidak ada token, Harap Login.!!');
+        }
+      await axios.delete(`http://localhost:8080/patients/${medicalRecordNumber}`,{
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+      })
+      setPatients(patients.filter(patient => patient.medicalRecordNumber !== medicalRecordNumber));
+      alert("Pasien berhasil dihapus");
+      navigate('/patients');
+      } catch (error) {
+        console.error("Error deleting patient:", error);
+        alert("Gagal menghapus pasien");
+        if (error.response && error.response.status === 401) {
+                navigate('/login');
+            } else {
+                alert('Failed to delete the patient. Please try again.');
             }
-          };
-
-          const goEdit = (medicalRecordNumber) => {
-            navigate(`/patients/edit/${medicalRecordNumber}`);
-          };
+      }
+    };
+    
+    const goEdit = (medicalRecordNumber) => {
+      navigate(`/patients/edit/${medicalRecordNumber}`);
+    };
         
   return (
     <div className="container mt-5 is-centered">

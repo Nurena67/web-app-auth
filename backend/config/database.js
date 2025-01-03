@@ -6,9 +6,9 @@ dotenv.config();
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: process.env.DB_HOST,
   dialect: 'mysql',
-  logging: false, // Disable SQL logs for a cleaner console output
+  logging: false,
   dialectOptions: {
-    connectTimeout: 60000, // Tambahkan timeout jika koneksi lambat
+    connectTimeout: 60000,
   },
 });
 

@@ -4,8 +4,8 @@ import axios from "axios";
 
 const FormAddPatient = () => {
   const navigate = useNavigate();
+  const [msg, setMsg] = useState("");
   const [formData, setFormData] = useState({
-    // medicalRecordNumber: '',
     name: '',
     age: '',
     gender: '',
@@ -17,45 +17,45 @@ const FormAddPatient = () => {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post("https://web-app-auth.up.railway.app/patients",formData);
-    alert('Pasien Berhasil di Tambahkan');
-    setFormData({
-    //   medicalRecordNumber: '',
-      name: '',
-      age: '',
-      gender: '',
-      bloodGroup: '',
-      complaint: '',
-      medicalHistory: '',
-      familyName: '',
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('Tidak ada token, Harap Login.!!');
+        }
+        await axios.post("http://localhost:8080/patients",formData,{
+        headers:{
+            Authorization: `Bearer ${token}`,
+        }
     });
-    back();
+        alert('Pasien Berhasil di Tambahkan');
+        setFormData({
+            name: '',
+            age: '',
+            gender: '',
+            bloodGroup: '',
+            complaint: '',
+            medicalHistory: '',
+            familyName: '',
+        }
+          );
+          alert('Pasein Berhasil diTambahkan!');
+          navigate("/patients");
+        } catch (error) {
+        if (error.response) {
+        setMsg(error.response.data.msg);
+    }
   };
-  
-  const back = () => {
+};
+
+const back = () => {
     navigate('/patients');
   }
+  
   return (
   <div className="container mt-5 is-centered">
     <div className="colums is-half">
       <h1 className="title">Form New Patient</h1>
       <form onSubmit={handleSubmit}>
-
-    {/* <div className="field">
-    <label className="label">Nomor Rekam Medis</label>
-    <div className="control">
-        <input
-            className="input"
-            type="number"
-            placeholder="Nomor Rekam Medis"
-            value={formData.medicalRecordNumber}
-            onChange={(e) =>
-                setFormData({ ...formData, medicalRecordNumber: e.target.value })
-            }
-            required
-        />
-    </div>
-</div> */}
       <div className="field">
                 <label className="label">Nama Lengkap</label>
                 <div className="control">

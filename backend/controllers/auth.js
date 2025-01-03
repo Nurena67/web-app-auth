@@ -1,59 +1,49 @@
-import User from '../models/userModel.js'
+import jwt from 'jsonwebtoken';
+import User from '../models/userModel.js';
 import argon2 from "argon2";
 
-export const Login = async (req, res) =>{
-    const user = await User.findOne({
-        where: {
-            email: req.body.email
-        }
-    });
-    if(!user) return res.status(404).json({msg: "User tidak ditemukan"});
+export const Login = async (req, res) => {
+    const { email, password } = req.body;
 
-    const match = await argon2.verify(user.password, req.body.password);
-    if(!match) return res.status(400).json({msg: "Wrong Password"});
-
-    req.session.userId = user.uuid;
-    console.log("Session Updated:", req.session);
-    
-    req.session.save((err) => {
-        if (err) {
-            console.error("Error saving session:", err);
-            return res.status(500).json({ msg: "Failed to save session" });
-        }
-        console.log("Session successfully saved:", req.session);
-    });
-    
-    const uuid = user.uuid;
-    const name = user.name;
-    const email = user.email;
-    const role = user.role;
-    res.status(200).json({uuid, name, email, role});
-}
-
-export const Me = async (req, res) =>{
-    console.log("Session ID:", req.session.id); // Log ID session
-    console.log("Session Data:", req.session); // Log isi session
-    if(!req.session.userId){
-        return res.status(401).json({msg: "Mohon login ke akun Anda!"});
-    }
     try {
-    const user = await User.findOne({
-        attributes:['uuid','name','email','role'],
-        where: {
-            uuid: req.session.userId
+        const user = await User.findOne({ where: { email } });
+        if (!user) {
+            return res.status(404).json({ msg: "User tidak ditemukan" });
         }
-    });
-    if(!user) return res.status(404).json({msg: "User tidak ditemukan"});
-    res.status(200).json(user);
-    }catch (error) {
-        console.error("Error in /me:", error);
-        res.status(500).json({ msg: "Internal server error" });
-    }
-}
 
-export const logOut = (req, res) =>{
-    req.session.destroy((err)=>{
-        if(err) return res.status(400).json({msg: "Tidak dapat logout"});
-        res.status(200).json({msg: "Anda telah logout"});
-    });
-}
+        // Verifikasi password menggunakan argon2
+        const isPasswordValid = await argon2.verify(user.password, password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ msg: "Password salah" });
+        }
+
+        // Buat JWT Token
+        const token = jwt.sign(
+            { uuid: user.uuid, role: user.role },
+            process.env.JWT_SECRET, // Simpan JWT secret di environment
+            { expiresIn: '1h' } // Token berlaku selama 1 jam
+        );
+
+        res.json({ msg: "Login berhasil", token });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Terjadi kesalahan server" });
+    }
+};
+
+export const Me = async (req, res) => {
+    try {
+        const user = await User.findOne({ where: { uuid: req.userId } });
+        if (!user) {
+            return res.status(404).json({ msg: "User tidak ditemukan" });
+        }
+        res.json({ name: user.name, email: user.email, role: user.role });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Terjadi kesalahan server" });
+    }
+};
+
+export const logOut = (req, res) => {
+    res.status(200).json({ msg: "Anda telah logout" });
+};

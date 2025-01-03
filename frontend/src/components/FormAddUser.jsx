@@ -14,14 +14,24 @@ const FormAddUser = () => {
   const saveUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://web-app-auth.up.railway.app/users", {
+      const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('Tidak ada token, Harap Login.!!');
+        }
+      await axios.post("http://localhost:8080/users", {
         name: name,
         email: email,
         password: password,
         confPassword: confPassword,
         role: role,
-      });
-      navigate("/users");
+      },{
+        headers:{
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    alert('User added successfully!');
+    navigate("/users");
     } catch (error) {
       if (error.response) {
         setMsg(error.response.data.msg);

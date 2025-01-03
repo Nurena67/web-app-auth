@@ -18,8 +18,12 @@ const FormEditPatient = () => {
   useEffect(() => {
     const getPatientsByid = async () => {
         try {
-            const response = await axios.get(`https://web-app-auth.up.railway.app/patients/${id}`);
-            setFormData(response.data);  // Menyimpan data ke state
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`http://localhost:8080/patients/${id}`, {
+                headers: 
+                { Authorization: `Bearer ${token}` }
+        });
+            setFormData(response.data);
         } catch (error) {
             console.error("Error get patients:", error);
         }
@@ -29,9 +33,17 @@ const FormEditPatient = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.put(`https://web-app-auth.up.railway.app/patients/${id}`,formData);
-    alert('Pasien Berhasil di Update');
-    backDetail();
+    try {
+        const token = localStorage.getItem('token');
+        await axios.put(`http://localhost:8080/patients/${id}`,formData , {
+            headers: 
+            { Authorization: `Bearer ${token}` }
+        });
+        alert('Pasien Berhasil di Update');
+        backDetail();
+    } catch (error) {
+        console.error("Error update patients:", error);
+    }
   };
   
   const backDetail = () => {

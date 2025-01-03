@@ -1,22 +1,58 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Userlist = () => {
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    getUsers();
-  }, []);
+    const getUsers = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('Tidak ada token, Harap Login.!!');
+        }
+        const response = await axios.get("http://localhost:8080/users", {
+          headers: {
+            Authorization : `Bearer ${token}`
+          }
+        });
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error get users:", error);
+        if (error.response && error.response.status === 401) {
+          navigate('/login');
+        }
+      }
+    };
+      getUsers(); 
+  }, [navigate]);
 
-  const getUsers = async () => {
-    const response = await axios.get("https://web-app-auth.up.railway.app/users");
-    setUsers(response.data);
-  };
+  
 
   const deleteUser = async (userId) => {
-    await axios.delete(`https://web-app-auth.up.railway.app/users/${userId}`);
-    getUsers();
+    try {
+      const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('Tidak ada token, Harap Login.!!');
+        }
+      await axios.delete(`http://localhost:8080/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUsers(users.filter(user => user.userId !== userId));
+      alert('Patient deleted successfully!');
+    } catch (error) {
+      console.error("Error deleting patient:", error);
+      if (error.response && error.response.status === 401) {
+        navigate('/login');
+      } else {
+        alert('Failed to delete the patient. Please try again.');
+      }
+    }
+    navigate('/dashboard')
   };
 
   return (
@@ -44,11 +80,11 @@ const Userlist = () => {
               <td>{user.email}</td>
               <td>{user.role}</td>
               <td>
-                <Link to={`/users/edit/${user.uuid}`}
+                <Link to={`/users/edit/${user.id}`}
                   className="button is-small is-info">
                   Edit
                 </Link>
-                <button onClick={() => deleteUser(user.uuid)}
+                <button onClick={() => deleteUser(user.id)}
                   className="button is-small is-danger">
                   Delete
                 </button>

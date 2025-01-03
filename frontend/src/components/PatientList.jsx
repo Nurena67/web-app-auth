@@ -5,17 +5,29 @@ import axios from 'axios';
 const PatientList = () => {
     const [patients, setPatients] = useState([]);
     const navigate = useNavigate();
+
     useEffect(() => {
         const getPatients = async () => {
             try {
-                const response = await axios.get("https://web-app-auth.up.railway.app/patients");
-                setPatients(response.data);  // Menyimpan data ke state
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error('Tidak ada token, Harap Login.!!');
+                }
+                const response = await axios.get("http://localhost:8080/patients", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                setPatients(response.data);
             } catch (error) {
                 console.error("Error get patients:", error);
+                if (error.response && error.response.status === 401) {
+                    navigate('/login');
+                }
             }
-        }
+        };
         getPatients();
-    }, []);
+    }, [navigate]);
 
     const goFormAdd = (FormAddPatient) =>{
         navigate('/patients/add')

@@ -15,7 +15,10 @@ const FormEditUser = () => {
   useEffect(() => {
     const getUserById = async () => {
       try {
-        const response = await axios.get(`https://web-app-auth.up.railway.app/users/${id}`);
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`http://localhost:8080/users/${id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
         setName(response.data.name);
         setEmail(response.data.email);
         setRole(response.data.role);
@@ -31,12 +34,15 @@ const FormEditUser = () => {
   const updateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`https://web-app-auth.up.railway.app/users/${id}`, {
+      const token = localStorage.getItem('token');
+      await axios.put(`http://localhost:8080/users/${id}`, {
         name: name,
         email: email,
         password: password,
         confPassword: confPassword,
         role: role,
+      }, {
+          headers: { Authorization: `Bearer ${token}` }
       });
       navigate("/users");
     } catch (error) {

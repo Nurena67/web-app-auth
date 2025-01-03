@@ -1,20 +1,16 @@
-// src/redux/authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const initialState = {
-    user: null,
-    isError: false,
-    isSuccess: false,
-    isLoading: false,
-    message: ""
-}
-
 // Async Thunks
-export const login = createAsyncThunk('auth/login', async (credentials, { rejectWithValue }) => {
+export const login = createAsyncThunk('auth/login', async ({email, password}, { rejectWithValue }) => {
   try {
-    const response = await axios.post('https://web-app-auth.up.railway.app/login', credentials, { withCredentials: true });
-    return response.data; // Misalnya { user: { id, name, email } }
+    const response = await axios.post('http://localhost:8080/login', {
+      email,
+      password
+    });
+    const token = response.data.token;
+    localStorage.setItem('token',token);
+    return { user : response.data.user, token}; 
   } catch (error) {
     return rejectWithValue(error.response.data);
   }
@@ -22,27 +18,54 @@ export const login = createAsyncThunk('auth/login', async (credentials, { reject
 
 export const checkLogin = createAsyncThunk('auth/checkLogin', async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get('https://web-app-auth.up.railway.app/me', { withCredentials: true });
-    return response.data; // Misalnya { user: { id, name, email } }
+    const token = localStorage.getItem("token");
+    const response = await axios.get('http://localhost:8080/me', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return { user : response.data }; 
   } catch (error) {
-    return rejectWithValue(error.response.data);
+    return rejectWithValue(error.response?.data?.msg || "Not authenticated");
   }
 });
 
-export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
+export const logout = createAsyncThunk('auth/logout', async () => {
   try {
-    await axios.delete('https://web-app-auth.up.railway.app/logout', {}, { withCredentials: true });
-    return null; // Logout berhasil
+    const token = localStorage.getItem("token");
+
+    await axios.delete("http://localhost:8080/logout", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // Menghapus token dari localStorage
+    localStorage.removeItem("token");
+
+    return {};
   } catch (error) {
-    return rejectWithValue(error.response.data);
+    console.error("Logout failed:", error);
   }
 });
 
 export const authSlice = createSlice({
     name: "auth",
-    initialState,
+    initialState: {
+      user: null,
+      token: null,
+      isError: false,
+      isSuccess: false,
+      isLoading: false,
+      message: "",
+    },
     reducers:{
-        reset: (state) => initialState
+        reset: (state) => {
+          state.isError = false;
+          state.isSuccess = false;
+          state.isLoading = false;
+          state.message = "";
+        },
     },
     extraReducers:(builder) =>{
         builder.addCase(login.pending, (state) =>{
@@ -51,13 +74,14 @@ export const authSlice = createSlice({
         builder.addCase(login.fulfilled, (state, action) =>{
             state.isLoading = false;
             state.isSuccess = true;
-            state.user = action.payload;
+            state.user = action.payload.user;
+            state.token = action.payload.token;
         });
         builder.addCase(login.rejected, (state, action) =>{
             state.isLoading = false;
             state.isError = true;
             state.message = action.payload;
-        })
+        });
 
         // Get User Login
         builder.addCase(checkLogin.pending, (state) =>{
@@ -66,13 +90,19 @@ export const authSlice = createSlice({
         builder.addCase(checkLogin.fulfilled, (state, action) =>{
             state.isLoading = false;
             state.isSuccess = true;
-            state.user = action.payload;
+            state.user = action.payload.user;
         });
         builder.addCase(checkLogin.rejected, (state, action) =>{
             state.isLoading = false;
             state.isError = true;
             state.message = action.payload;
         })
+
+        builder.addCase(logout.fulfilled, (state) => {
+          state.user = null;
+          state.token = null;
+          state.isSuccess = false;
+        });
     }
 });
 
