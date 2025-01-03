@@ -27,7 +27,6 @@ const FormAddPatient = () => {
             Authorization: `Bearer ${token}`,
         }, withCredentials: true
     });
-        alert('Pasien Berhasil di Tambahkan');
         setFormData({
             name: '',
             age: '',
