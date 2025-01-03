@@ -22,7 +22,7 @@ const FormAddPatient = () => {
         if (!token) {
           throw new Error('Tidak ada token, Harap Login.!!');
         }
-        await axios.post("http://localhost:8080/patients",formData,{
+        await axios.post("https://web-app-auth.up.railway.app/patients",formData,{
         headers:{
             Authorization: `Bearer ${token}`,
         }

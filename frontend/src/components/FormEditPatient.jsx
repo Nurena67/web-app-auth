@@ -19,7 +19,7 @@ const FormEditPatient = () => {
     const getPatientsByid = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get(`http://localhost:8080/patients/${id}`, {
+            const response = await axios.get(`https://web-app-auth.up.railway.app/patients/${id}`, {
                 headers: 
                 { Authorization: `Bearer ${token}` }
         });
@@ -35,7 +35,7 @@ const FormEditPatient = () => {
     e.preventDefault();
     try {
         const token = localStorage.getItem('token');
-        await axios.put(`http://localhost:8080/patients/${id}`,formData , {
+        await axios.put(`https://web-app-auth.up.railway.app/patients/${id}`,formData , {
             headers: 
             { Authorization: `Bearer ${token}` }
         });

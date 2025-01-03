@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 8080;
 
 //Middleware
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'https://web-app-umber-omega.vercel.app/',
   credentials: true
 };
 

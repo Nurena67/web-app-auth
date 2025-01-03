@@ -18,7 +18,7 @@ const FormAddUser = () => {
         if (!token) {
           throw new Error('Tidak ada token, Harap Login.!!');
         }
-      await axios.post("http://localhost:8080/users", {
+      await axios.post("https://web-app-auth.up.railway.app/users", {
         name: name,
         email: email,
         password: password,

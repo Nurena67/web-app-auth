@@ -13,7 +13,7 @@ const PatientList = () => {
                 if (!token) {
                     throw new Error('Tidak ada token, Harap Login.!!');
                 }
-                const response = await axios.get("http://localhost:8080/patients", {
+                const response = await axios.get("https://web-app-auth.up.railway.app/patients", {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

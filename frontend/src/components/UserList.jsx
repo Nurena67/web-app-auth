@@ -13,7 +13,7 @@ const Userlist = () => {
         if (!token) {
           throw new Error('Tidak ada token, Harap Login.!!');
         }
-        const response = await axios.get("http://localhost:8080/users", {
+        const response = await axios.get("https://web-app-auth.up.railway.app/users", {
           headers: {
             Authorization : `Bearer ${token}`
           }
@@ -37,7 +37,7 @@ const Userlist = () => {
         if (!token) {
           throw new Error('Tidak ada token, Harap Login.!!');
         }
-      await axios.delete(`http://localhost:8080/users/${userId}`, {
+      await axios.delete(`https://web-app-auth.up.railway.app/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
