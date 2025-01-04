@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { checkLogin } from "./features/authSlice";
 import Login from "./components/Login";
+import Register from "./components/Register";
 import Home from "./components/Home";
 import Dashboard from "./pages/Dashboard";
 import Patients from "./pages/Patients";
@@ -26,6 +27,7 @@ function App() {
       <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home/>}/>
+        <Route path="/register" element={<Register/>}/>
         <Route path="/login" element={ user? <Navigate to='/dashboard'/> : <Login/> } />
         <Route path="/dashboard" element={ <Dashboard/> }/>
         <Route path="/patients" element={<Patients/>}/>
