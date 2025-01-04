@@ -117,7 +117,7 @@ const Register = () => {
             <input
               className="input"
               type="password"
-              name="confirmPassword"
+              name="confPassword"
               value={formData.confPassword}
               onChange={handleChange}
               required
