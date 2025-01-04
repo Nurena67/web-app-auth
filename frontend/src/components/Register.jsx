@@ -36,16 +36,7 @@ const Register = () => {
     setError("");
 
     try{
-    const token = localStorage.getItem('token');
-        if (!token) {
-          throw new Error('Tidak ada token, Harap Login.!!');
-        }
-        await axios.post("https://web-app-auth.up.railway.app/users", formData,{
-            headers:{
-              Authorization: `Bearer ${token}`,
-            }, withCredentials: true
-          }
-        );
+        await axios.post("https://web-app-auth.up.railway.app/users", formData);
         setFormData({
             name: "",
             email: "",
