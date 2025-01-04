@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import 'bulma/css/bulma.min.css';
 
 function Home() {
+  const {user} = useSelector((state) => state.auth);
   return (
     <section className="hero is-primary is-fullheight">
       <div className="hero-body">
@@ -12,8 +14,16 @@ function Home() {
             Welcome to our web application for managing patient data efficiently and securely.
           </p>
           <div className="buttons is-centered mt-5">
-            <Link to="/register" className="button is-link is-medium">Register</Link>
-            <Link to="/login" className="button is-light is-medium">Sign In</Link>
+          {user ? (
+              <Link to="/dashboard" className="button is-link is-medium">
+                Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link to="/register" className="button is-link is-medium">Register</Link>
+                <Link to="/login" className="button is-light is-medium">Sign In</Link>
+              </>
+            )}
           </div>
         </div>
       </div>
