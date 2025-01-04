@@ -1,10 +1,20 @@
-import React from 'react';
+import React ,{ useEffect, useState }from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import 'bulma/css/bulma.min.css';
 
 function Home() {
   const {user} = useSelector((state) => state.auth);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Gunakan useEffect untuk memantau perubahan state user
+  useEffect(() => {
+    if (user) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, [user]);
   return (
     <section className="hero is-primary is-fullheight">
       <div className="hero-body">
@@ -14,7 +24,7 @@ function Home() {
             Welcome to our web application for managing patient data efficiently and securely.
           </p>
           <div className="buttons is-centered mt-5">
-          {user ? (
+          {isAuthenticated ? (
               <Link to="/dashboard" className="button is-link is-medium">
                 Dashboard
               </Link>
