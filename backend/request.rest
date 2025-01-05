@@ -29,3 +29,14 @@ GET https://web-app-auth.up.railway.app/patients
 
 ###
 DELETE  https://web-app-auth.up.railway.app/logout
+
+###
+POST https://web-app-auth.up.railway.app/register
+Content-Type: application/json
+
+{
+    "name":"Viola",
+    "email":"viola@gmail.com",
+    "password":"12345678",
+    "role":"user"
+}

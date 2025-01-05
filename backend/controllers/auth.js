@@ -47,3 +47,4 @@ export const Me = async (req, res) => {
 export const logOut = (req, res) => {
     res.status(200).json({ msg: "Anda telah logout" });
 };
+

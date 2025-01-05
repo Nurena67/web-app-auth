@@ -112,3 +112,28 @@ export const deleteUser = async (req, res) => {
         res.status(500).json({ msg: "Terjadi kesalahan server" });
     }
 };
+
+export const Register = async (req, res) => {
+    const { name, email, password, role } = req.body;
+
+    try {
+        const existingUser = await User.findOne({ where: { email } });
+        if (existingUser) {
+            return res.status(409).json({ msg: "Email sudah digunakan" });
+        }
+
+        const hashedPassword = await argon2.hash(password);
+
+        await User.create({
+            name,
+            email,
+            password: hashedPassword,
+            role: role || "user" // Default role "user" jika tidak diberikan
+        });
+
+        res.status(201).json({ msg: "Registrasi berhasil" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Terjadi kesalahan server" });
+    }
+};

@@ -36,7 +36,7 @@ const Register = () => {
     setError("");
 
     try{
-        await axios.post("https://web-app-auth.up.railway.app/users", formData);
+        await axios.post("https://web-app-auth.up.railway.app/register", formData);
         setFormData({
             name: "",
             email: "",
