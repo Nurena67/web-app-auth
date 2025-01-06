@@ -124,7 +124,7 @@ const back = () => {
                 <select
                 name="userId"
                 value={formData.userId}
-                onChange={(e) => setFormData({ ...formData, userId: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, userId: parseInt(e.target.value) })}
                 required
                 >
                   <option value="">Pilih Dokter</option>
