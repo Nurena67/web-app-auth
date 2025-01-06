@@ -37,12 +37,10 @@ const User = sequelize.define(
             }
         },
         role:{
-            type: DataTypes.STRING,
+            type: DataTypes.ENUM('admin', 'doctor', 'nurse'),
             allowNull: false,
-            validate:{
-                notEmpty: true
-            }
-        }
+            defaultValue: 'nurse',
+        },
     },
     {
       timestamps: true,
