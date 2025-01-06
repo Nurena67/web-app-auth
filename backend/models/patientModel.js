@@ -46,7 +46,9 @@ const Patient = sequelize.define(
         model: 'User',
         key: 'id',
       }
+    },
   },
+  {
     timestamps: true,
     freezeTableName: true, // Prevent Sequelize from pluralizing table names
   }
