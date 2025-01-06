@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const FormAddPatient = () => {
   const navigate = useNavigate();
   const [msg, setMsg] = useState("");
+  const [doctors, setDoctors] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
     age: '',
@@ -12,8 +13,26 @@ const FormAddPatient = () => {
     bloodGroup: '',
     complaint: '',
     medicalHistory: '',
+    doctorId: '',
     familyName: '',
   });
+
+  useEffect(() => {
+    const getDoctors = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get("https://web-app-auth.up.railway.app/users?role=doctor", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setDoctors(response.data);
+      } catch (error) {
+        console.error("Gagal Mendapatkan Data:", error);
+      }
+    };
+    getDoctors();
+  }, []);
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,6 +53,7 @@ const FormAddPatient = () => {
             bloodGroup: '',
             complaint: '',
             medicalHistory: '',
+            doctorId: '',
             familyName: '',
         }
           );
@@ -100,6 +120,26 @@ const back = () => {
                     </div>
                 </div>
             </div>
+
+            <div className="field">
+            <label className="label">Pilih Dokter</label>
+            <div className="control">
+              <div className="select">
+                <select
+                  value={formData.doctorId}
+                  onChange={(e) => setFormData({ ...formData, doctorId: e.target.value })}
+                  required
+                >
+                  <option value="">Pilih Dokter</option>
+                  {doctors.map((doctor) => (
+                    <option key={doctor.id} value={doctor.id}>
+                      {doctor.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
 
             <div className="field">
                 <label className="label">Keluhan</label>
