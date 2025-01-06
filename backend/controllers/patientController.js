@@ -14,7 +14,13 @@ export const getPatients = async (req, res) => {
         ],
       }
     );
-    const patientsData = patients.map(patient => patient.get({ plain: true }));
+    const patientsData = patients.map(patient => {
+      const patientData = patient.get({ plain: true });
+      
+      patientData.doctorName = patientData.User.name;
+      delete patientData.User; 
+      return patientData;
+    });
     console.log("All Patients Fetched:", patientsData);
     res.status(200).json(patientsData);
   } catch (err) {
