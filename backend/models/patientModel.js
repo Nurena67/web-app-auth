@@ -1,6 +1,5 @@
 import { Sequelize } from 'sequelize';
 import sequelize from '../config/database.js';
-import User from './userModel.js';
 
 const Patient = sequelize.define(
   'Patient',
@@ -53,7 +52,6 @@ const Patient = sequelize.define(
   }
 );
 
-User.hasMany(Patient, { foreignKey: 'userId' });
-Patient.belongsTo(User, { foreignKey: 'userId' });
+
 
 export default Patient;

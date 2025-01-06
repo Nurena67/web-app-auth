@@ -1,5 +1,6 @@
 import {Sequelize} from 'sequelize';
 import sequelize from '../config/database.js';
+import Patient from './patientModel.js';
 
 const {DataTypes} = Sequelize;
 const User = sequelize.define(
@@ -48,4 +49,7 @@ const User = sequelize.define(
     }
   );
   
+User.hasMany(Patient, { foreignKey: 'userId' });
+Patient.belongsTo(User, { foreignKey: 'userId' });
+
   export default User;
