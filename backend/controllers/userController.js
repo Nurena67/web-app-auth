@@ -3,8 +3,20 @@ import argon2 from "argon2";
 
 // Get All Users
 export const getUsers = async (req, res) => {
+    const { role } = req.query;
+
     try {
-        const users = await User.findAll();
+        const whereClause = role ? { role: role } : {};
+
+        const users = await User.findAll({
+            attributes:['uuid','name','email','role'],
+            where: whereClause
+        });
+
+        if (users.length === 0) {
+            return res.status(404).json({ msg: 'Tidak ada pengguna dengan role tersebut' });
+          }
+          
         res.json(users);
     } catch (error) {
         console.error(error);
