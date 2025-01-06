@@ -128,7 +128,7 @@ export const Register = async (req, res) => {
             name,
             email,
             password: hashedPassword,
-            role: role || "user" // Default role "user" jika tidak diberikan
+            role: role || "nurse"
         });
 
         res.status(201).json({ msg: "Registrasi berhasil" });
