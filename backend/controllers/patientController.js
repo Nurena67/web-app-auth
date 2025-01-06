@@ -1,4 +1,5 @@
 import Patient from '../models/patientModel.js';
+import User from'../models/userModel.js'
 
 // Get Patients
 export const getPatients = async (req, res) => {
@@ -16,7 +17,7 @@ export const getPatients = async (req, res) => {
     );
     const patientsData = patients.map(patient => {
       const patientData = patient.get({ plain: true });
-      
+
       patientData.doctorName = patientData.User.name;
       delete patientData.User; 
       return patientData;

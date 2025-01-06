@@ -1,15 +1,20 @@
 GET https://web-app-auth.up.railway.app/users
 
 ###
+// Get Doctor
+GET https://web-app-auth.up.railway.app/doctor
+
+
+###
 POST https://web-app-auth.up.railway.app/users
 Content-Type: application/json
 
 {
-    "name":"Rizky 2",
-    "email":"user@gmail.com",
+    "name":"admin",
+    "email":"admin@gmail.com",
     "password":"12345678",
     "confPassword":"12345678",
-    "role":"user"
+    "role":"admin"
 }
 
 ###
@@ -17,7 +22,7 @@ POST https://web-app-auth.up.railway.app/login
 Content-Type: application/json
 
 {
-    "email":"user@gmail.com",
+    "email":"admin@gmail.com",
     "password":"12345678"
 }
 
@@ -35,8 +40,8 @@ POST https://web-app-auth.up.railway.app/register
 Content-Type: application/json
 
 {
-    "name":"Viola",
-    "email":"viola@gmail.com",
+    "name":"irsyad ",
+    "email":"irsyad@gmail.com",
     "password":"12345678",
-    "role":"user"
+    "role":"doctor"
 }
