@@ -16,7 +16,7 @@ export const getUsers = async (req, res) => {
         if (users.length === 0) {
             return res.status(404).json({ msg: 'Tidak ada pengguna dengan role tersebut' });
           }
-          
+
         res.json(users);
     } catch (error) {
         console.error(error);
@@ -149,3 +149,25 @@ export const Register = async (req, res) => {
         res.status(500).json({ msg: "Terjadi kesalahan server" });
     }
 };
+
+// Get Doctor
+export const getDoctors = async (req, res) => {
+    try {
+      const doctors = await User.findAll({
+        attributes: ['uuid', 'name', 'email', 'role'],
+        where: {
+          role: 'doctor', 
+        },
+      });
+  
+      if (doctors.length === 0) {
+        return res.status(404).json({ msg: 'Tidak ada dokter yang ditemukan' });
+      }
+  
+      res.json(doctors);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ msg: 'Terjadi kesalahan server' });
+    }
+  };
+  
