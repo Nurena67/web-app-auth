@@ -12,7 +12,7 @@ import { verifyUser, adminOnly} from '../middleware/AuthUser.js'
 const router = express.Router();
 
 router.get('/users', verifyUser, adminOnly, getUsers);
-router.get('/doctor', verifyUser, getDoctors);
+router.get('/doctor', getDoctors);
 router.get('/users/:id', verifyUser, adminOnly, getUserById);
 router.post('/users', verifyUser, adminOnly, createUser);
 router.post('/register', Register);
