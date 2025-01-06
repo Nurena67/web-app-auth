@@ -154,7 +154,7 @@ export const Register = async (req, res) => {
 export const getDoctors = async (req, res) => {
     try {
       const doctors = await User.findAll({
-        attributes: ['uuid', 'name', 'email', 'role'],
+        attributes: ['id', 'name', 'email', 'role'],
         where: {
           role: 'doctor', 
         },
