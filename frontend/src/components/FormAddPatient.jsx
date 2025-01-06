@@ -126,9 +126,10 @@ const back = () => {
             <div className="control">
               <div className="select">
                 <select
-                  value={formData.userIdId}
-                  onChange={(e) => setFormData({ ...formData, userIdId: e.target.value })}
-                  required
+                name="userId"
+                value={formData.userId}
+                onChange={(e) => setFormData({ ...formData, userId: e.target.value })}
+                required
                 >
                   <option value="">Pilih Dokter</option>
                   {doctors.map((doctor) => (
