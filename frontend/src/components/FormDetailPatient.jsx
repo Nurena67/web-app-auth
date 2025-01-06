@@ -85,7 +85,7 @@ const FormDetailPatient = () => {
               <td>{patient.name}</td>
               <td>{patient.age}</td>
               <td>{patient.gender}</td>
-              <td>{patient.userId}</td>
+              <td>{patient.userId.name}</td>
               <td>{patient.complaint}</td>
               <td>{patient.medicalHistory}</td>
               <td>{patient.bloodGroup}</td>
