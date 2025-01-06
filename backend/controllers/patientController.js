@@ -3,7 +3,17 @@ import Patient from '../models/patientModel.js';
 // Get Patients
 export const getPatients = async (req, res) => {
   try {
-    const patients = await Patient.findAll();
+    const patients = await Patient.findAll(
+      {
+        include: [
+          {
+            model: User,
+            where:{role : 'doctor'} ,
+            attributes: ['name'],
+          },
+        ],
+      }
+    );
     const patientsData = patients.map(patient => patient.get());
     console.log("All Patients Fetched:", patientsData);
     res.status(200).json(patientsData);
