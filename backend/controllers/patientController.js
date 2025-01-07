@@ -36,6 +36,13 @@ export const getPatientDetail = async (req, res) => {
     const { medicalRecordNumber } = req.params;
     const patient = await Patient.findOne({
       where: { medicalRecordNumber },
+      include: [
+        {
+          model: User,
+          where:{role : 'doctor'} ,
+          attributes: ['name'],
+        },
+      ],
     });
     
     if (!patient) {

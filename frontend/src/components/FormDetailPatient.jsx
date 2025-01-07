@@ -108,7 +108,6 @@ const FormDetailPatient = () => {
                 </button>
               </td>
             </tr>
-            ))}
         </tbody>
       </table>
         <div>
