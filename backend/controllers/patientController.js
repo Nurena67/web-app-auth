@@ -50,7 +50,7 @@ export const getPatientDetail = async (req, res) => {
 
     const patientData = {
       ...patient.toJSON(), // Mengonversi instance Sequelize ke objek JSON
-      doctorName: doctor ? doctor.name : null,
+      doctorName: doctor ? doctor.name : 'No doctor assigned',
     };
      
     res.json(patientData);
