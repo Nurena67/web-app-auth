@@ -11,7 +11,7 @@ const FormDetailPatient = () => {
   
   useEffect(() => {
     console.log(medicalRecordNumber);
-    const getPatientsByid = async (medicalRecordNumber) => {
+    const getPatientsByid = async () => {
       try {
           const token = localStorage.getItem('token');
           if (!token) {
@@ -30,8 +30,9 @@ const FormDetailPatient = () => {
           }
       }
     };
-
-  getPatientsByid();
+    if(medicalRecordNumber){
+      getPatientsByid();
+    }
   },[medicalRecordNumber, navigate]);
 
   const handleDelete = async (medicalRecordNumber) => {
