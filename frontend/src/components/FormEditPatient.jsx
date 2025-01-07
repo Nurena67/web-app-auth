@@ -62,7 +62,7 @@ const FormEditPatient = () => {
   };
   
   const backDetail = () => {
-    navigate(`patients/:medicalRecordNumber`);
+    navigate('/patients');
   }
   return (
   <div className="container mt-5 is-centered">
