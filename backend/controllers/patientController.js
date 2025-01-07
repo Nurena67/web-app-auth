@@ -44,6 +44,18 @@ export const getPatientDetail = async (req, res) => {
     
     const patientData = patient.get(); 
     console.log("Patient Detail Fetched:", patientData); 
+
+    const doctor = await User.findOne({
+      where: {
+        id: patientData.userId, // Asumsi userId merujuk pada ID user yang menjadi dokter
+        role: 'doctor', // Pastikan hanya mencari user dengan role doctor
+      },
+    });
+
+    if (doctor) {
+      patientData.doctorName = doctor.name; // Menambahkan nama dokter ke dalam data pasien
+    }
+    
     res.json(patientData);
   } catch (err) {
     console.error("Error fetching patient detail:", err.message);
