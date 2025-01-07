@@ -10,7 +10,6 @@ const FormDetailPatient = () => {
   const navigate = useNavigate();
   
   useEffect(() => {
-    console.log(medicalRecordNumber);
     const getPatientsByid = async () => {
       try {
           const token = localStorage.getItem('token');
