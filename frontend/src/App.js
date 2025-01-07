@@ -35,7 +35,7 @@ function App() {
         <Route path="/users/add" element={<AddUser/>}/>
         <Route path="/users/edit/:id" element={<EditUser/>}/>
         <Route path="/patients/add" element={<AddPatient/>}/>
-        <Route path="/patients/detail/:medicalR" element={<DetailPatient/>}/>
+        <Route path="/patients/detail/:medicalRecordNumber" element={<DetailPatient/>}/>
         <Route path="/patients/edit/:id" element={<EditPatient/>}/>
       </Routes>
       </BrowserRouter>

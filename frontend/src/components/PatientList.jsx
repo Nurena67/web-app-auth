@@ -32,10 +32,7 @@ const PatientList = () => {
     const goFormAdd = (FormAddPatient) =>{
         navigate('/patients/add')
     };
-    // const goFormDetail = (medicalRecordNumber) =>{
-    //     navigate(`/patients/detail/${medicalRecordNumber}`)
-    // };
-
+  
   return (
     <div>
         <div className="container mt-5 is-centered">
@@ -67,10 +64,6 @@ const PatientList = () => {
                                     <td>
 
                                     <Link to={`/patients/detail/${patient.medicalRecordNumber}`} className='button is-small is-primary' > Detail </Link>
-                                    {/* <button  onClick={goFormDetail}
-                                            className="button is-info is-small is-rounded">
-                                             Detail
-                                        </button> */}
                                     </td>
                                 </tr>
                             ))
