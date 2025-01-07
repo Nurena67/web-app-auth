@@ -48,8 +48,10 @@ export const getPatientDetail = async (req, res) => {
       attributes: ['name'],
     });
 
-    const patientData = patient.get();
-    patientData.doctorName = doctor ? doctor.name : null;
+    const patientData = {
+      ...patient.toJSON(), // Mengonversi instance Sequelize ke objek JSON
+      doctorName: doctor ? doctor.name : null,
+    };
      
     res.json(patientData);
   } catch (err) {
