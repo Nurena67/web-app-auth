@@ -63,7 +63,7 @@ const PatientList = () => {
                                     <td>{patient.complaint}</td>
                                     <td>
 
-                                    <Link to={`/patients/detail/${patient.medicalRecordNumber}`} className='button is-small is-primary' > Detail </Link>
+                                    <Link to={`/patients/${patient.medicalRecordNumber}`} className='button is-small is-primary' > Detail </Link>
                                     </td>
                                 </tr>
                             ))
