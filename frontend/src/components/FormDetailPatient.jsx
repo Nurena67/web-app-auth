@@ -4,7 +4,7 @@ import { useNavigate, Link , useParams} from 'react-router-dom';
 import "bulma/css/bulma.css"
 
 const FormDetailPatient = () => {
-  const [patients, setPatients] = useState([]);
+  const [patients, setPatients] = useState(null);
   const { medicalRecordNumber} = useParams();
   const navigate = useNavigate();
   
@@ -60,7 +60,10 @@ const FormDetailPatient = () => {
     const goEdit = (medicalRecordNumber) => {
       navigate(`/patients/edit/${medicalRecordNumber}`);
     };
-        
+
+    if (!patients) {
+      return <div>Loading...</div>;
+    }
   return (
     <div className="container mt-5 is-centered">
       <h1 className="title">Detail Pasien</h1>
@@ -80,39 +83,30 @@ const FormDetailPatient = () => {
           </tr>
         </thead>
         <tbody style={{ backgroundColor: '#f0f8ff' }}>
-        {Array.isArray(patients) && patients.length > 0 ?(
-            patients.map(patient => (
-            <tr key={patient.medicalRecordNumber}>
-              <td>{patient.medicalRecordNumber}</td>
-              <td>{patient.name}</td>
-              <td>{patient.age}</td>
-              <td>{patient.gender}</td>
-              <td>{patient.doctorName || 'Tidak Diketahui'}</td>
-              <td>{patient.complaint}</td>
-              <td>{patient.medicalHistory}</td>
-              <td>{patient.bloodGroup}</td>
-              <td>{patient.familyName}</td>
+            <tr key={patients.medicalRecordNumber}>
+              <td>{patients.medicalRecordNumber}</td>
+              <td>{patients.name}</td>
+              <td>{patients.age}</td>
+              <td>{patients.gender}</td>
+              <td>{patients.doctorName || 'Tidak Diketahui'}</td>
+              <td>{patients.complaint}</td>
+              <td>{patients.medicalHistory}</td>
+              <td>{patients.bloodGroup}</td>
+              <td>{patients.familyName}</td>
               <td>
                 <button
-                  onClick={() => goEdit(patient.medicalRecordNumber)}
+                  onClick={() => goEdit(patients.medicalRecordNumber)}
                   className="button is-small is-info">
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDelete(patient.medicalRecordNumber)}
+                  onClick={() => handleDelete(patients.medicalRecordNumber)}
                   className="button is-small is-danger ml-2">
                   Delete
                 </button>
               </td>
             </tr>
-            ))
-        ) : (
-            <tr>
-                <td colSpan="5" style={{ textAlign: 'center' }}>
-                    No data available.
-                </td>
-            </tr>
-        )}
+            ))}
         </tbody>
       </table>
         <div>

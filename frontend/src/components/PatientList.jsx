@@ -67,7 +67,7 @@ const PatientList = () => {
                                     <td>{patient.complaint}</td>
                                     <td>
 
-                                    <Link to={`/patients/detail/${medicalRecordNumber}`} className='button is-small is-primary' > Detail </Link>
+                                    <Link to={`/patients/detail/${patient.medicalRecordNumber}`} className='button is-small is-primary' > Detail </Link>
                                     {/* <button  onClick={goFormDetail}
                                             className="button is-info is-small is-rounded">
                                              Detail
