@@ -4,7 +4,7 @@ import { useNavigate, Link , useParams} from 'react-router-dom';
 import "bulma/css/bulma.css"
 
 const FormDetailPatient = () => {
-  const [patients, setPatients] = useState(null);
+  const [patient, setPatient] = useState(null);
   const { medicalRecordNumber} = useParams();
   const navigate = useNavigate();
   
@@ -20,7 +20,7 @@ const FormDetailPatient = () => {
                   Authorization: `Bearer ${token}`,
               },withCredentials: true
           });
-          setPatients(response.data);
+          setPatient(response.data);
       } catch (error) {
           console.error("Error get patients:", error);
           if (error.response && error.response.status === 401) {
@@ -43,7 +43,6 @@ const FormDetailPatient = () => {
           Authorization: `Bearer ${token}`
         }, withCredentials: true
       });
-      setPatients(patients.filter(patient => patient.medicalRecordNumber !== medicalRecordNumber));
       alert("Pasien berhasil dihapus");
       navigate('/patients');
       } catch (error) {
@@ -61,7 +60,7 @@ const FormDetailPatient = () => {
       navigate(`/patients/edit/${medicalRecordNumber}`);
     };
 
-    if (!patients) {
+    if (!patient) {
       return <div>Loading...</div>;
     }
   return (
@@ -83,24 +82,24 @@ const FormDetailPatient = () => {
           </tr>
         </thead>
         <tbody style={{ backgroundColor: '#f0f8ff' }}>
-            <tr key={patients.medicalRecordNumber}>
-              <td>{patients.medicalRecordNumber}</td>
-              <td>{patients.name}</td>
-              <td>{patients.age}</td>
-              <td>{patients.gender}</td>
-              <td>{patients.doctorName || 'Tidak Diketahui'}</td>
-              <td>{patients.complaint}</td>
-              <td>{patients.medicalHistory}</td>
-              <td>{patients.bloodGroup}</td>
-              <td>{patients.familyName}</td>
+            <tr key={patient.medicalRecordNumber}>
+              <td>{patient.medicalRecordNumber}</td>
+              <td>{patient.name}</td>
+              <td>{patient.age}</td>
+              <td>{patient.gender}</td>
+              <td>{patient.doctorName || 'Tidak Diketahui'}</td>
+              <td>{patient.complaint}</td>
+              <td>{patient.medicalHistory}</td>
+              <td>{patient.bloodGroup}</td>
+              <td>{patient.familyName}</td>
               <td>
                 <button
-                  onClick={() => goEdit(patients.medicalRecordNumber)}
+                  onClick={() => goEdit(patient.medicalRecordNumber)}
                   className="button is-small is-info">
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDelete(patients.medicalRecordNumber)}
+                  onClick={() => handleDelete(patient.medicalRecordNumber)}
                   className="button is-small is-danger ml-2">
                   Delete
                 </button>
