@@ -73,18 +73,19 @@ const Userlist = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user, index) => (
-            <tr key={user.uuid}>
-              <td>{index + 1}</td>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.role}</td>
               <td>
-                <Link to={`/users/edit/${user.uuid}`}
-                  className="button is-small is-info">
-                  Edit
-                </Link>
-                <button onClick={() => deleteUser(user.uuid)}
+              <button
+              className="button is-info mr-2"
+              onClick={() => navigate(`/users/edit/${user.id}`)}>
+                Edit
+                </button>
+                <button onClick={() => deleteUser(user.id)}
                   className="button is-small is-danger">
                   Delete
                 </button>

@@ -10,13 +10,13 @@ const FormEditUser = () => {
   const [role, setRole] = useState("");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
-  const { uuid } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
     const getUserById = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`https://web-app-auth.up.railway.app/users/${uuid}`, {
+        const response = await axios.get(`https://web-app-auth.up.railway.app/users/${id}`, {
             headers: { Authorization: `Bearer ${token}` }, withCredentials: true
         });
         setName(response.data.name);
@@ -29,18 +29,18 @@ const FormEditUser = () => {
       }
     };
     getUserById();
-  }, [uuid]);
+  }, [id, navigate]);
 
   const updateUser = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`https://web-app-auth.up.railway.app/users/${uuid}`, {
+      await axios.put(`https://web-app-auth.up.railway.app/users/${id}`, {
         name: name,
         email: email,
         password: password,
         confPassword: confPassword,
-        role: role,
+        role: role
       }, {
           headers: { Authorization: `Bearer ${token}` }, withCredentials: true
       });
