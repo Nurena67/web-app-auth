@@ -35,22 +35,22 @@ export const getPatientDetail = async (req, res) => {
   try {
     const { medicalRecordNumber } = req.params;
     const patient = await Patient.findOne({
-      where: { medicalRecordNumber },
-      include: [
-        {
-          model: User,
-          where:{role : 'doctor'} ,
-          attributes: ['name'],
-        },
-      ],
+      where: { medicalRecordNumber }
     });
     
     if (!patient) {
       return res.status(404).json({ error: 'Patient not found' });
     }
-    
-    const patientData = patient.get(); 
     console.log("Patient Detail Fetched:", patientData); 
+
+    const doctor = await User.findOne({
+      where: { id: patient.userId, role: 'doctor' },
+      attributes: ['name'],
+    });
+
+    const patientData = patient.get();
+    patientData.doctorName = doctor ? doctor.name : null;
+     
     res.json(patientData);
   } catch (err) {
     console.error("Error fetching patient detail:", err.message);
