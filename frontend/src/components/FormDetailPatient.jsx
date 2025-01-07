@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link , useParams} from 'react-router-dom';
 import "bulma/css/bulma.css"
 
 const FormDetailPatient = () => {
   const [patients, setPatients] = useState([]);
+  const { medicalRecordNumber} = useParams();
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -14,7 +15,7 @@ const FormDetailPatient = () => {
           if (!token) {
               throw new Error('Tidak ada token, Harap Login.!!');
           }
-          const response = await axios.get('https://web-app-auth.up.railway.app/patients', {
+          const response = await axios.get(`https://web-app-auth.up.railway.app/patients/${medicalRecordNumber}`, {
               headers: {
                   Authorization: `Bearer ${token}`,
               },withCredentials: true
@@ -29,7 +30,7 @@ const FormDetailPatient = () => {
     };
 
   getPatientsByid();
-  },[navigate]);
+  },[medicalRecordNumber, navigate]);
 
   const handleDelete = async (medicalRecordNumber) => {
     try {
