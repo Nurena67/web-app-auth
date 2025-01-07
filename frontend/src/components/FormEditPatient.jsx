@@ -4,6 +4,7 @@ import axios from "axios";
 
 const FormEditPatient = () => {
   const navigate = useNavigate();
+  const [doctors, setDoctors] = useState([]);
   const {id} = useParams();
   const [formData, setFormData] = useState({
     name: '',
@@ -12,9 +13,23 @@ const FormEditPatient = () => {
     bloodGroup: '',
     complaint: '',
     medicalHistory: '',
+    userId:'',
     familyName: '',
   });
   
+  useEffect(() => {
+      const getDoctors = async () => {
+        try {
+          const response = await axios.get("https://web-app-auth.up.railway.app/doctor");
+          setDoctors(response.data);
+        } catch (error) {
+          console.error("Gagal Mendapatkan Data Dokter:", error);
+        }
+      };
+    
+      getDoctors();
+    }, []);
+
   useEffect(() => {
     const getPatientsByid = async () => {
         try {
@@ -99,6 +114,26 @@ const FormEditPatient = () => {
                     </div>
                 </div>
             </div>
+
+            <div className="field">
+            <label className="label">Pilih Dokter</label>
+            <div className="control">
+              <div className="select">
+                <select
+                value={formData.userId}
+                onChange={(e) => setFormData({ ...formData, userId: e.target.value })}
+                required
+                >
+                  <option value="">Pilih Dokter</option>
+                  {doctors.map((doctor) => (
+                    <option key={doctor.id} value={doctor.id}>
+                      {doctor.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
 
             <div className="field">
                 <label className="label">Keluhan</label>
