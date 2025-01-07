@@ -73,15 +73,15 @@ const Userlist = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
+          {users.map((user, index) => (
             <tr key={user.id}>
-              <td>{user.id}</td>
+              <td>{index + 1 }</td>
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.role}</td>
               <td>
               <button
-              className="button is-info mr-2"
+              className="button is-info is-small"
               onClick={() => navigate(`/users/edit/${user.id}`)}>
                 Edit
                 </button>

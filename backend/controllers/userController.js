@@ -9,7 +9,7 @@ export const getUsers = async (req, res) => {
         const whereClause = role ? { role: role } : {};
 
         const users = await User.findAll({
-            attributes:['uuid','name','email','role'],
+            attributes:['id','uuid','name','email','role'],
             where: whereClause
         });
 
