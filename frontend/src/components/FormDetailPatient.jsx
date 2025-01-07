@@ -11,7 +11,7 @@ const FormDetailPatient = () => {
   
   useEffect(() => {
     console.log(medicalRecordNumber);
-    const getPatientsByid = async () => {
+    const getPatientsByid = async (medicalRecordNumber) => {
       try {
           const token = localStorage.getItem('token');
           if (!token) {
