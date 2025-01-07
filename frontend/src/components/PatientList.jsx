@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link, useParams} from 'react-router-dom';
 import axios from 'axios';
 
 const PatientList = () => {
     const [patients, setPatients] = useState([]);
     const navigate = useNavigate();
+    const {medicalRecordNumber} = useParams();
 
     useEffect(() => {
         const getPatients = async () => {
@@ -32,9 +33,9 @@ const PatientList = () => {
     const goFormAdd = (FormAddPatient) =>{
         navigate('/patients/add')
     };
-    const goFormDetail = (medicalRecordNumber) =>{
-        navigate(`/patients/detail/${medicalRecordNumber}`)
-    };
+    // const goFormDetail = (medicalRecordNumber) =>{
+    //     navigate(`/patients/detail/${medicalRecordNumber}`)
+    // };
 
   return (
     <div>
@@ -65,10 +66,12 @@ const PatientList = () => {
                                     <td>{patient.age}</td>
                                     <td>{patient.complaint}</td>
                                     <td>
-                                    <button  onClick={goFormDetail}
+
+                                    <Link to={`/patients/detail/${medicalRecordNumber}`} className='button is-small is-primary' > Detail </Link>
+                                    {/* <button  onClick={goFormDetail}
                                             className="button is-info is-small is-rounded">
                                              Detail
-                                        </button>
+                                        </button> */}
                                     </td>
                                 </tr>
                             ))
