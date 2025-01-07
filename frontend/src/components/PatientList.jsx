@@ -5,7 +5,6 @@ import axios from 'axios';
 const PatientList = () => {
     const [patients, setPatients] = useState([]);
     const navigate = useNavigate();
-    const {medicalRecordNumber} = useParams();
 
     useEffect(() => {
         const getPatients = async () => {
