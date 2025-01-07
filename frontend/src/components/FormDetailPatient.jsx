@@ -5,8 +5,8 @@ import "bulma/css/bulma.css"
 
 const FormDetailPatient = () => {
   const [patients, setPatients] = useState([]);
-  const navigate = useNavigate();
   const {id} = useParams();
+  const navigate = useNavigate();
   
   useEffect(() => {
     const getPatientsByid = async () => {
@@ -28,8 +28,9 @@ const FormDetailPatient = () => {
           }
       }
     };
+
   getPatientsByid();
-  }, [id, navigate]);
+  },[id, navigate]);
 
   const handleDelete = async (medicalRecordNumber) => {
     try {
