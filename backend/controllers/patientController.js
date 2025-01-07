@@ -34,7 +34,7 @@ export const getPatients = async (req, res) => {
 export const getPatientDetail = async (req, res) => {
   try {
     const { medicalRecordNumber } = req.params;
-    const patient = await Patient.findOne({
+    const patient = await Patient.findByPk({
       where: { medicalRecordNumber },
     });
     

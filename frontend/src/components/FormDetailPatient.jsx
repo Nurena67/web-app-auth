@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
-import { useNavigate, Link , useParams} from 'react-router-dom';
-import "bulma/css/bulma.css"
+import { useNavigate, Link } from 'react-router-dom';
+import "bulma/css/bulma.css";
+import { useParams } from 'react-router-dom';
 
 const FormDetailPatient = () => {
   const [patient, setPatient] = useState(null);
