@@ -33,7 +33,7 @@ const PatientList = () => {
         navigate('/patients/add')
     };
     const goFormDetail = (FormAddPatient) =>{
-        navigate('/patients/detail')
+        navigate('/patients/detail/:id')
     };
 
   return (
