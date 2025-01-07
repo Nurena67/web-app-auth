@@ -35,24 +35,15 @@ export const getPatientDetail = async (req, res) => {
   try {
     const { medicalRecordNumber } = req.params;
     const patient = await Patient.findOne({
-      where: { medicalRecordNumber }
+      where: { medicalRecordNumber },
     });
     
     if (!patient) {
       return res.status(404).json({ error: 'Patient not found' });
     }
+    
+    const patientData = patient.get(); 
     console.log("Patient Detail Fetched:", patientData); 
-
-    const doctor = await User.findOne({
-      where: { id: patient.userId, role: 'doctor' },
-      attributes: ['name'],
-    });
-
-    const patientData = {
-      ...patient.toJSON(), // Mengonversi instance Sequelize ke objek JSON
-      doctorName: doctor ? doctor.name : 'No doctor assigned',
-    };
-     
     res.json(patientData);
   } catch (err) {
     console.error("Error fetching patient detail:", err.message);
