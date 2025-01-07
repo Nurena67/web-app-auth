@@ -65,7 +65,7 @@ const PatientList = () => {
                                     <td>{patient.age}</td>
                                     <td>{patient.complaint}</td>
                                     <td>
-                                    <button  onClick={goFormDetail(patient.medicalRecordNumber)}
+                                    <button  onClick={goFormDetail}
                                             className="button is-info is-small is-rounded">
                                              Detail
                                         </button>
