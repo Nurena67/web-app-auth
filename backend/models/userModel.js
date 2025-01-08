@@ -52,4 +52,19 @@ const User = sequelize.define(
 User.hasMany(Patient, { foreignKey: 'userId' });
 Patient.belongsTo(User, { foreignKey: 'userId' });
 
-  export default User;
+Patient.belongsToMany(User, {
+    through: 'patient_nurse',
+    as: 'nurses',
+    foreignKey: 'patientId',
+    otherKey: 'nurseId',
+  });
+  
+User.belongsToMany(Patient, {
+    through: 'patient_nurse',
+    as: 'patients',
+    foreignKey: 'nurseId',
+    otherKey: 'patientId',
+  });
+
+
+export default User;
