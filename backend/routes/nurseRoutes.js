@@ -8,3 +8,5 @@ const router = express.Router();
 
 router.get('/patients/:patientId/nurses', getNursesByPatinet);
 router.post('/patients/:patientId/assign-nurse', assignNurseToPatient);
+
+export default router;
