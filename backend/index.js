@@ -4,6 +4,7 @@ import cors from 'cors';
 import patientRoutes from './routes/patientRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import nurseRoutes from './routes/nurseRoutes.js';
 import sequelize from './config/database.js';
 
 
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use('/patients', patientRoutes);
 app.use(userRoutes);
 app.use(authRoutes);
+app.use(nurseRoutes);
 
 // Sync database
 sequelize.sync({ alter:true }) // force: false akan mencegah penghapusan tabel yang sudah ada
