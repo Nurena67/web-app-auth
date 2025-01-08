@@ -6,7 +6,8 @@ export const getNursesByPatinet = async (req, res) => {
     try{
         const { patientId} = req.params;
 
-        const patient = await Patient.findByPk( patientId, {
+        const patient = await Patient.findOne({
+            where: {medicalRecordNumber: patientId},
             include: {
                 model: User,
                 as: 'nurses',
@@ -30,14 +31,12 @@ export const assignNurseToPatient = async (req, res) => {
       const { nurseId } = req.body;
   
       // Cari pasien berdasarkan ID
-      const patient = await Patient.findByPk(patientId);
+      const patient = await Patient.findOne({ where: { medicalRecordNumber: patientId } });
       if (!patient) return res.status(404).json({ message: 'Patient not found' });
   
       // Cari perawat berdasarkan ID
-      const nurse = await User.findByPk(nurseId);
-      if (!nurse || nurse.role !== 'nurse') {
-        return res.status(404).json({ message: 'Nurse not found or invalid role' });
-      }
+      const nurse = await User.findOne({ where: { id: nurseId, role: 'nurse' } });
+      if (!nurse) return res.status(404).json({ message: 'Nurse not found or invalid role' });
   
       // Assign nurse ke pasien
       await patient.addNurse(nurse);
