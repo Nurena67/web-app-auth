@@ -1,5 +1,5 @@
-import User from "../models/userModel";
-import Patient from "../models/patientModel";
+import User from "../models/userModel.js";
+import Patient from "../models/patientModel.js";
 
 // Get all nurses assigned to a patient
 export const getNursesByPatinet = async (req, res) => {
