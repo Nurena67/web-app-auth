@@ -46,3 +46,48 @@ export const assignNurseToPatient = async (req, res) => {
       res.status(500).json({ message: error.message });
     }
   };
+
+  // Get all patients assigned to a nurse
+export const getPatientsByNurse = async (req, res) => {
+    try {
+      const { nurseId } = req.params;
+  
+      // Cari perawat berdasarkan ID dan include pasien yang dirawat
+      const nurse = await User.findByPk(nurseId, {
+        include: {
+          model: Patient,
+          as: 'patients',
+          attributes: ['medicalRecordNumber', 'name', 'age', 'gender', 'doctorName'],
+        },
+      });
+  
+      if (!nurse) return res.status(404).json({ message: 'Nurse not found' });
+  
+      res.status(200).json(nurse.patients);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+
+
+// Remove nurse from patient
+export const removeNurseFromPatient = async (req, res) => {
+    try {
+      const { patientId } = req.params;
+      const { nurseId } = req.body;
+  
+      // Cari pasien dan perawat
+      const patient = await Patient.findByPk(patientId);
+      const nurse = await User.findByPk(nurseId);
+  
+      if (!patient || !nurse) return res.status(404).json({ message: 'Patient or Nurse not found' });
+  
+      // Hapus relasi
+      await patient.removeNurse(nurse);
+  
+      res.status(200).json({ message: `Nurse ${nurse.name} removed from patient ${patient.name}` });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  
