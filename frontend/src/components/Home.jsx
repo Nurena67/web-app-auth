@@ -1,11 +1,10 @@
-import React ,{ useEffect, useState }from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import 'bulma/css/bulma.min.css';
 
 function Home() {
 
-  const {user} = useSelector((state) => state.auth);
+  const token = localStorage.getItem('token');
 
   return (
     <section className="hero is-primary is-fullheight">
@@ -18,7 +17,7 @@ function Home() {
 
           <div className="buttons is-centered mt-5">
 
-          {user && user.token ? (
+          {token ? (
               <Link to="/dashboard" className="button is-link is-medium">
                 Dashboard
               </Link>
@@ -29,7 +28,7 @@ function Home() {
                 <Link to="/register" className="button is-link is-medium">Register</Link>
                 <Link to="/login" className="button is-light is-medium">Sign In</Link>
               </>
-              
+
             )}
           </div>
         </div>
