@@ -57,7 +57,7 @@ export const getPatientsByNurse = async (req, res) => {
         include: {
           model: Patient,
           as: 'patients',
-          attributes: ['medicalRecordNumber', 'name', 'age', 'gender', 'doctorName'],
+          attributes: ['medicalRecordNumber', 'name', 'age', 'gender'],
         },
       });
   
