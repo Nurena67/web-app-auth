@@ -4,17 +4,9 @@ import { useSelector } from 'react-redux';
 import 'bulma/css/bulma.min.css';
 
 function Home() {
-  const {user} = useSelector((state) => state.auth);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Gunakan useEffect untuk memantau perubahan state user
-  useEffect(() => {
-    if (user) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-    }
-  }, [user]);
+  const {user} = useSelector((state) => state.auth);
+
   return (
     <section className="hero is-primary is-fullheight">
       <div className="hero-body">
@@ -23,16 +15,21 @@ function Home() {
           <p className="subtitle is-4">
             Welcome to our web application for managing patient data efficiently and securely.
           </p>
+
           <div className="buttons is-centered mt-5">
-          {isAuthenticated ? (
+
+          {user && user.token ? (
               <Link to="/dashboard" className="button is-link is-medium">
                 Dashboard
               </Link>
+
             ) : (
+
               <>
                 <Link to="/register" className="button is-link is-medium">Register</Link>
                 <Link to="/login" className="button is-light is-medium">Sign In</Link>
               </>
+              
             )}
           </div>
         </div>
