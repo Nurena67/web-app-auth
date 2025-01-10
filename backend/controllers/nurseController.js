@@ -97,8 +97,12 @@ export const getAllNurses = async (req,res) => {
     try {
     const nurses = await User.findAll({
       where: { role: 'nurse' },
-      attributes: ['id','name','email']
+      attributes: ['id','name','email','role']
     });
+
+    if(nurses.length === 0){
+      return res.status(404).json({msg: 'Data Perawat Kosong'});
+    }
 
     res.status(200).json(nurses);
   } catch (error) {
