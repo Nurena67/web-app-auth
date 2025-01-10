@@ -91,7 +91,7 @@ const FormDetailPatient = () => {
               <td>{patient.age}</td>
               <td>{patient.gender}</td>
               <td>{patient.doctorName || 'Tidak Diketahui'}</td>
-              <td>{patient.nurseNames || 'Tidak Diketahui'}</td>
+              <td>{patient.nurseNames.join(', ') || 'Tidak Diketahui'}</td>
               <td>{patient.complaint}</td>
               <td>{patient.medicalHistory}</td>
               <td>{patient.bloodGroup}</td>
