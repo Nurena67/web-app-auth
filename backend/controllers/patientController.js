@@ -9,15 +9,16 @@ export const getPatients = async (req, res) => {
         include: [
           {
             model: User,
-            where:{role : 'doctor'} ,
+            where:{role :'doctor'} ,
             attributes: ['name'],
+            as: 'doctor',
           },
           {
             model: User,
-            as: 'nurses',
-            where: { role: 'nurse'},
-            attributes: ['name'],
-            through: { attributes: [] },
+            where: { role: 'nurse' }, // Hanya ambil user dengan role nurse
+            attributes: ['name'], // Ambil hanya nama perawat
+            through: { attributes: [] }, // Menghilangkan atribut dari tabel pivot many-to-many
+            as: 'nurses', // Alias untuk relasi nurses (many-to-many)
           },
         ],
       }
@@ -25,15 +26,12 @@ export const getPatients = async (req, res) => {
     const patientsData = patients.map(patient => {
       const patientData = patient.get({ plain: true });
 
-      if (patientData.User){
-      patientData.doctorName = patientData.User.name;
-      delete patientData.User;
-    }
+      patientData.doctorName = patientData.doctor ? patientData.doctor.name : null;
 
-      if (patientData.nurses){
-      patientData.nurseName = patientData.nurses.map(nurse => nurse.name);
-      delete patientsData.Users;
-    }
+      patientData.nurseNames = patientData.nurses.map(nurse => nurse.name);
+      
+      delete patientData.doctor;
+      delete patientData.nurses;
 
       return patientData;
     });
