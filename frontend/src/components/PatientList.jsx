@@ -62,7 +62,7 @@ const PatientList = () => {
                                     <td>{patient.name}</td>
                                     <td>{patient.complaint}</td>
                                     <td>{patient.doctorName}</td>
-                                    <td>{patient.nurseNames}</td>
+                                    <td>{patient.nurseNames.join(', ')}</td>
                                     <td>
 
                                     <Link to={`/patients/${patient.medicalRecordNumber}`} className='button is-small is-primary' > Detail </Link>
