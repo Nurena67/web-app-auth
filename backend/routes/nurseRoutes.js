@@ -1,5 +1,6 @@
 import express from 'express';
 import { 
+    getAllNurses,
     getNursesByPatinet,
     assignNurseToPatient,
     getPatientsByNurse,
@@ -8,6 +9,7 @@ import {
 
 const router = express.Router();
 
+router.get('/nurses', getAllNurses);
 router.get('/patients/:patientId/nurses', getNursesByPatinet);
 router.get('/nurses/:nurseId/patients', getPatientsByNurse);
 router.post('/patients/:patientId/assign-nurse', assignNurseToPatient);

@@ -90,4 +90,18 @@ export const removeNurseFromPatient = async (req, res) => {
       res.status(500).json({ message: error.message });
     }
   };
-  
+
+
+//Get All Nurse
+export const getAllNurses = async (req,res) => {
+    try {
+    const nurses = await User.findAll({
+      where: { role: 'nurse' },
+      attributes: ['id','name','email']
+    });
+
+    res.status(200).json(nurses);
+  } catch (error) {
+    res.status(500).json({msg: error.message}); 
+  }
+};
