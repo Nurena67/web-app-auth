@@ -7,7 +7,6 @@ const FormAddPatient = () => {
   const [msg, setMsg] = useState("");
   const [doctors, setDoctors] = useState([]);
   const [nurses, setNurses] = useState([]);
-  const [selectedNurses, setSelectedNurses] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
     age: '',
@@ -16,6 +15,7 @@ const FormAddPatient = () => {
     complaint: '',
     medicalHistory: '',
     userId: '',
+    nurseId: '',
     familyName: '',
   });
 
@@ -59,10 +59,10 @@ const FormAddPatient = () => {
 
         const patientId = patientResponse.data.medicalRecordNumber;
 
-        if (selectedNurses.length > 0) {
+        if (formData.nurseId) {
           await axios.post(
             `https://web-app-auth.up.railway.app/patients/${patientId}/assign-nurse`,
-            { nurseIds: selectedNurses },
+            { nurseIds: [Number(formData.nurseId)]},
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -157,27 +157,24 @@ const back = () => {
           </div>
 
           <div className="field">
-            <label className="label">Pilih Perawat</label>
-            <div className="control">
-              <div className="select is-multiple">
-                <select
-                  multiple
-                  value={selectedNurses}
-                  onChange={(e) =>
-                    setSelectedNurses(
-                      Array.from(e.target.selectedOptions, (option) => option.value)
-                    )
-                  }
-                >
-                  {nurses.map((nurse) => (
-                    <option key={nurse.id} value={nurse.id}>
-                      {nurse.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <label className="label">Pilih Perawat</label>
+                <div className="control">
+                      <div className="select">
+                        <select
+                          value={formData.nurseId}
+                          onChange={(e) => setFormData({ ...formData, nurseId: e.target.value })}
+                          required
+                        >
+                          <option value="">Pilih Perawat</option>
+                          {nurses.map((nurse) => (
+                            <option key={nurse.id} value={nurse.id}>
+                              {nurse.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                  </div>
             </div>
-          </div>
 
             <div className="field">
                 <label className="label">Keluhan</label>
