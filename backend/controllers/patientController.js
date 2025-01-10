@@ -9,13 +9,11 @@ export const getPatients = async (req, res) => {
         include: [
           {
             model: User,
-            as: 'User',
             where:{role : 'doctor'} ,
             attributes: ['name'],
           },
           {
             model: User,
-            as: 'nurses',
             where: { role: 'nurse'},
             attributes: ['name'],
             through: { attributes: [] },
@@ -29,8 +27,8 @@ export const getPatients = async (req, res) => {
       patientData.doctorName = patientData.User.name;
       delete patientData.User;
 
-      patientData.nurseName = patientData.nurses.map(nurse => nurse.name);
-      delete patientsData.nurses;
+      patientData.nurseName = patientData.Users.map(user => user.name);
+      delete patientsData.Users;
 
       return patientData;
     });
