@@ -15,7 +15,7 @@ export const getNursesByPatinet = async (req, res) => {
             },
         });
 
-        if(!Patient) return res.status(400).json({message: 'Patient not found'});
+        if(!patient) return res.status(400).json({message: 'Patient not found'});
 
         res.status(200).json(patient.nurses)
     } catch (error){
@@ -75,6 +75,9 @@ export const removeNurseFromPatient = async (req, res) => {
     try {
       const { patientId } = req.params;
       const { nurseId } = req.body;
+
+      console.log(`Patient ID: ${patientId}`);
+      console.log(`Nurse ID: ${nurseId}`);
   
       // Cari pasien dan perawat
       const patient = await Patient.findOne({

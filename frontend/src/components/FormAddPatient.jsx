@@ -62,7 +62,7 @@ const FormAddPatient = () => {
         if (formData.nurseId) {
           await axios.post(
             `https://web-app-auth.up.railway.app/patients/${patientId}/assign-nurse`,
-            { nurseIds: [Number(formData.nurseId)]},
+            { nurseId: Number(formData.nurseId)},
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -76,8 +76,10 @@ const FormAddPatient = () => {
           navigate("/patients");
         } catch (error) {
         if (error.response) {
-        setMsg(error.response.data.msg);
-    }
+        setMsg(error.response.data.msg || "Terjadi kesalahan, silakan coba lagi!");
+      } else {
+        setMsg("Tidak dapat terhubung ke server.");
+      }
   };
 };
 
