@@ -105,6 +105,7 @@ const FormEditPatient = () => {
         setMsg("Tidak dapat terhubung ke server.");
       }
   };
+  };
 
   const handleNurseSelection = (e) => {
     const selectedNurses = Array.from(e.target.selectedOptions, option => Number(option.value));
