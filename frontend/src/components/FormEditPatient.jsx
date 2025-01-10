@@ -3,10 +3,11 @@ import { useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 
 const FormEditPatient = () => {
+  const {id} = useParams();
   const navigate = useNavigate();
+  const [msg, setMsg] = useState("");
   const [doctors, setDoctors] = useState([]);
   const [nurses, setNurses] = useState([]);
-  const {id} = useParams();
   const [formData, setFormData] = useState({
     name: '',
     age: '',
@@ -15,62 +16,99 @@ const FormEditPatient = () => {
     complaint: '',
     medicalHistory: '',
     userId:'',
-    nurseId: '',
+    nurseIds: [],
     familyName: '',
   });
   
   useEffect(() => {
-      const getDoctors = async () => {
-        try {
-          const response = await axios.get("https://web-app-auth.up.railway.app/doctor");
-          setDoctors(response.data);
-        } catch (error) {
-          console.error("Gagal Mendapatkan Data Dokter:", error);
-        }
-      };
-
-      const getNurses = async () => {
-        try {
-          const response = await axios.get("https://web-app-auth.up.railway.app/nurses");
-          setNurses(response.data);
-        } catch (error) {
-          console.error("Gagal Mendapatkan Data Perawat:", error);
-        }
-      };
-    
-      getDoctors();
-      getNurses();
-    }, []);
-
-  useEffect(() => {
     const getPatientsByid = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get(`https://web-app-auth.up.railway.app/patients/${id}`, {
-                headers: 
-                { Authorization: `Bearer ${token}` } , withCredentials: true
-        });
-            setFormData(response.data);
-        } catch (error) {
-            console.error("Error get patients:", error);
+      
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`https://web-app-auth.up.railway.app/patients/${id}`, 
+        { headers: 
+          { Authorization: `Bearer ${token}` } ,
+          withCredentials: true
         }
-    }
+      );
+      
+      setFormData(response.data);
+      } catch (error) {
+        console.error("Error get patients:", error);
+      }
+    };
+
+    const getDoctors = async () => {
+      
+      try {
+        const response = await axios.get("https://web-app-auth.up.railway.app/doctor");
+        setDoctors(response.data);
+
+      } catch (error) {
+        console.error("Gagal Mendapatkan Data Dokter:", error);
+      }
+    };
+
+    const getNurses = async () => {
+      
+      try {
+        const response = await axios.get("https://web-app-auth.up.railway.app/nurses");
+        setNurses(response.data);
+
+      } catch (error) {
+        console.error("Gagal Mendapatkan Data Perawat:", error);
+      }
+    };
+    
     getPatientsByid();
-}, [id]);
+    getDoctors();
+    getNurses();
+  }, [id]);
+
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const token = localStorage.getItem('token');
-        await axios.put(`https://web-app-auth.up.railway.app/patients/${id}`,formData , {
-            headers: 
-            { Authorization: `Bearer ${token}` }, withCredentials: true
-        });
-        alert('Pasien Berhasil di Update');
-        backDetail();
+      const token = localStorage.getItem('token');
+      if(!token) {
+        throw new Error('Tidak ada Token, Harap Login!!..')
+      };
+
+    await axios.put(`https://web-app-auth.up.railway.app/patients/${id}`, 
+    formData , 
+      { 
+        headers: { 
+          Authorization: `Bearer ${token}` },
+          withCredentials: true
+      }
+    );
+
+    await axios.post(
+      `https://web-app-auth.up.railway.app/patients/${id}/assign-nurse`,
+      { nurseIds: formData.nurseIds },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    alert('Pasien Berhasil di Update');
+    navigate('/patients')
+
     } catch (error) {
-        console.error("Error update patients:", error);
-    }
+      if (error.response) {
+        setMsg(error.response.data.msg || "Terjadi kesalahan, silakan coba lagi!");
+      } else {
+        setMsg("Tidak dapat terhubung ke server.");
+      }
+  };
+
+  const handleNurseSelection = (e) => {
+    const selectedNurses = Array.from(e.target.selectedOptions, option => Number(option.value));
+    setFormData({ ...formData, nurseIds: selectedNurses });
   };
   
   const backDetail = () => {
@@ -148,24 +186,23 @@ const FormEditPatient = () => {
           </div>
 
           <div className="field">
-              <label className="label">Pilih Perawat</label>
-                <div className="control">
-                      <div className="select">
-                        <select
-                          value={formData.nurseId}
-                          onChange={(e) => setFormData({ ...formData, nurseId: e.target.value })}
-                          required
-                        >
-                          <option value="">Pilih Perawat</option>
-                          {nurses.map((nurse) => (
-                            <option key={nurse.id} value={nurse.id}>
-                              {nurse.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                  </div>
+            <label className="label">Pilih Perawat</label>
+            <div className="control">
+              <div className="select is-multiple">
+                <select
+                  multiple
+                  value={formData.nurseIds}
+                  onChange={handleNurseSelection}
+                >
+                  {nurses.map((nurse) => (
+                    <option key={nurse.id} value={nurse.id}>
+                      {nurse.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
+          </div>
 
             <div className="field">
                 <label className="label">Keluhan</label>
@@ -227,20 +264,20 @@ const FormEditPatient = () => {
             </div>
 
             <div className="field is-grouped mb-6">
-                <div className="control">
-                    <button className="button is-link" type="submit">
-                        Save
-                    </button>
-                </div>
-                <div className="control">
-                    <button onClick={backDetail} className="button is-link is-light" type="button">
-                        Cancel
-                    </button>
-                </div>
-            </div>
-        </form>
+              <div className="control">
+                <button className="button is-link" type="submit">
+                  Update
+                </button>
+              </div>
+              <div className="control">
+                <button onClick={backDetail} className="button is-link is-light" type="button">
+                  Cancel
+                </button>
+              </div>
+            </div>    
+      </form>
     </div>
-    </div>
+  </div>
   )
 }
 
