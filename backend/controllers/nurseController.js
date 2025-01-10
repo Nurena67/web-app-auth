@@ -77,10 +77,12 @@ export const removeNurseFromPatient = async (req, res) => {
       const { nurseId } = req.body;
   
       // Cari pasien dan perawat
-      const patient = await Patient.findByPk(medicalRecordNumber);
+      const patient = await Patient.findOne({
+        where : {medicalRecordNumber}
+      });
+
       const nurse = await User.findOne({
-        where : { id: nurseId, role: 'nurse'},
-        nurseId
+        where : { id: nurseId, role: 'nurse'}
       });
   
       if (!patient || !nurse) return res.status(404).json({ message: 'Patient or Nurse not found' });
