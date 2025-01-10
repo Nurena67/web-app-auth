@@ -9,8 +9,16 @@ export const getPatients = async (req, res) => {
         include: [
           {
             model: User,
+            as: 'User',
             where:{role : 'doctor'} ,
             attributes: ['name'],
+          },
+          {
+            model: User,
+            as: 'nurses',
+            where: { role: 'nurse'},
+            attributes: ['name'],
+            through: { attributes: [] },
           },
         ],
       }
@@ -19,11 +27,17 @@ export const getPatients = async (req, res) => {
       const patientData = patient.get({ plain: true });
 
       patientData.doctorName = patientData.User.name;
-      delete patientData.User; 
+      delete patientData.User;
+
+      patientData.nurseName = patientData.nurses.map(nurse => nurse.name);
+      delete patientsData.nurses;
+
       return patientData;
     });
+
     console.log("All Patients Fetched:", patientsData);
     res.status(200).json(patientsData);
+
   } catch (err) {
     console.error("Error fetching patients:", err.message);
     res.status(500).json({ error: err.message });
