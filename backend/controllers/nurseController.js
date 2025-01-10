@@ -28,20 +28,26 @@ export const getNursesByPatinet = async (req, res) => {
 export const assignNurseToPatient = async (req, res) => {
     try {
       const { patientId } = req.params;
-      const { nurseId } = req.body;
+      const { nurseIds } = req.body;
   
       // Cari pasien berdasarkan ID
       const patient = await Patient.findOne({ where: { medicalRecordNumber: patientId } });
       if (!patient) return res.status(404).json({ message: 'Patient not found' });
   
       // Cari perawat berdasarkan ID
-      const nurse = await User.findOne({ where: { id: nurseId, role: 'nurse' } });
-      if (!nurse) return res.status(404).json({ message: 'Nurse not found or invalid role' });
+      const nurses = await User.findAll({ 
+        where: { 
+          id: nurseIds,
+          role: 'nurse',
+        }
+      });
+      if (nurses.length === 0) return res.status(404).json({ message: 'No valid nurses found' });
   
       // Assign nurse ke pasien
-      await patient.addNurse(nurse);
+      await patient.addNurse(nurses);
   
-      res.status(200).json({ message: `Nurse ${nurse.name} assigned to patient ${patient.name}` });
+      res.status(200).json({ message: `Nurses assigned to patient ${patient.name}`,
+        nurses: nurses.map(n => ({ id: n.id, name: n.name })), });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
