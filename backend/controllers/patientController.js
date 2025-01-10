@@ -51,27 +51,32 @@ export const getPatientDetail = async (req, res) => {
     const { medicalRecordNumber } = req.params;
     const patient = await Patient.findOne({
       where: { medicalRecordNumber },
+      include: [
+        {
+          model: User,
+          as: 'doctor',
+          attributes: ['name'],
+        },
+        {
+          model: User,
+          as: 'nurses',
+          attributes: ['name'],
+          through: { attributes: [] },
+        },
+      ],
     });
     
     if (!patient) {
       return res.status(404).json({ error: 'Patient not found' });
     }
     
-    const patientData = patient.get(); 
-    console.log("Patient Detail Fetched:", patientData); 
+    const patientData = patient.get({plain: true});
 
-    const doctor = await User.findOne({
-      where: {
-        id: patientData.userId, // Asumsi userId merujuk pada ID user yang menjadi dokter
-        role: 'doctor', // Pastikan hanya mencari user dengan role doctor
-      },
-    });
-
-    if (doctor) {
-      patientData.doctorName = doctor.name; // Menambahkan nama dokter ke dalam data pasien
-    }
+    patientData.doctorName = patientData.doctor ? patientData.doctor.name : null;
+    patientData.nurseNames = patientData.nurses ? patientData.nurses.map(nurse => nurse.name) : [];
     
     res.json(patientData);
+    console.log("Patient Detail Fetched:", patientData); 
   } catch (err) {
     console.error("Error fetching patient detail:", err.message);
     res.status(500).json({ error: err.message });
