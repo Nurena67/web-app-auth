@@ -73,12 +73,12 @@ export const getPatientsByNurse = async (req, res) => {
 // Remove nurse from patient
 export const removeNurseFromPatient = async (req, res) => {
     try {
-      const { medicalRecordNumber } = req.params;
+      const { patientId } = req.params;
       const { nurseId } = req.body;
   
       // Cari pasien dan perawat
       const patient = await Patient.findOne({
-        where : {medicalRecordNumber}
+        where : { medicalRecordNumber : patientId}
       });
 
       const nurse = await User.findOne({
