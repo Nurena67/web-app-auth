@@ -6,6 +6,8 @@ const FormAddPatient = () => {
   const navigate = useNavigate();
   const [msg, setMsg] = useState("");
   const [doctors, setDoctors] = useState([]);
+  const [nurses, setNurses] = useState([]);
+  const [selectedNurses, setSelectedNurses] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
     age: '',
@@ -27,7 +29,18 @@ const FormAddPatient = () => {
         console.error("Gagal Mendapatkan Data:", error);
       }
     };
+
+    const getNurses = async () => {
+      try {
+        const response = await axios.get("https://web-app-auth.up.railway.app/nurses");
+        setNurses(response.data);
+      } catch (error) {
+        console.error("Gagal Mendapatkan Data Perawat:", error);
+      }
+    };
+
     getDoctors();
+    getNurses();
   }, []);
   
   const handleSubmit = async (e) => {
@@ -37,22 +50,27 @@ const FormAddPatient = () => {
         if (!token) {
           throw new Error('Tidak ada token, Harap Login.!!');
         }
-        await axios.post("https://web-app-auth.up.railway.app/patients",formData,{
-        headers:{
+
+        const patientResponse = await axios.post("https://web-app-auth.up.railway.app/patients",formData,
+        { headers:{
             Authorization: `Bearer ${token}`,
-        }, withCredentials: true
-    });
-        setFormData({
-            name: '',
-            age: '',
-            gender: '',
-            bloodGroup: '',
-            complaint: '',
-            medicalHistory: '',
-            userId: '',
-            familyName: '',
-        }
+          }, withCredentials: true
+        });
+
+        const patientId = patientResponse.data.medicalRecordNumber;
+
+        if (selectedNurses.length > 0) {
+          await axios.post(
+            `https://web-app-auth.up.railway.app/patients/${patientId}/assign-nurse`,
+            { nurseIds: selectedNurses },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
           );
+        }
+        
           alert('Pasein Berhasil diTambahkan!');
           navigate("/patients");
         } catch (error) {
@@ -130,6 +148,29 @@ const back = () => {
                   {doctors.map((doctor) => (
                     <option key={doctor.id} value={doctor.id}>
                       {doctor.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div className="field">
+            <label className="label">Pilih Perawat</label>
+            <div className="control">
+              <div className="select is-multiple">
+                <select
+                  multiple
+                  value={selectedNurses}
+                  onChange={(e) =>
+                    setSelectedNurses(
+                      Array.from(e.target.selectedOptions, (option) => option.value)
+                    )
+                  }
+                >
+                  {nurses.map((nurse) => (
+                    <option key={nurse.id} value={nurse.id}>
+                      {nurse.name}
                     </option>
                   ))}
                 </select>
