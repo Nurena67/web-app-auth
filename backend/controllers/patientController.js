@@ -9,7 +9,7 @@ export const getPatients = async (req, res) => {
         include: [
           {
             model: User,
-            where:{role : 'doctor' && 'nurse'} ,
+            where:{role : 'doctor'} ,
             attributes: ['name'],
           },
         ],
