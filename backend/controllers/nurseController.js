@@ -78,8 +78,8 @@ export const removeNurseFromPatient = async (req, res) => {
   
       // Cari pasien dan perawat
       const patient = await Patient.findByPk(medicalRecordNumber);
-      const nurse = await User.findAll({
-        where : {role: 'nurse'},
+      const nurse = await User.findOne({
+        where : { id: 'nurseId', role: 'nurse'},
         nurseId
       });
   
