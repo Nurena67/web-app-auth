@@ -15,7 +15,7 @@ const FormAddPatient = () => {
     complaint: '',
     medicalHistory: '',
     userId: '',
-    nurseId: '',
+    nurseIds: [],
     familyName: '',
   });
 
@@ -59,10 +59,10 @@ const FormAddPatient = () => {
 
         const patientId = patientResponse.data.medicalRecordNumber;
 
-        if (formData.nurseId) {
+        if (formData.nurseIds.length > 0 ) {
           await axios.post(
             `https://web-app-auth.up.railway.app/patients/${patientId}/assign-nurse`,
-            { nurseId: Number(formData.nurseId)},
+            { nurseIds: formData.nurseIds },
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -81,6 +81,11 @@ const FormAddPatient = () => {
         setMsg("Tidak dapat terhubung ke server.");
       }
   };
+};
+
+const handleNurseSelection = (e) => {
+  const selectedNurses = Array.from(e.target.selectedOptions, option => Number(option.value));
+  setFormData({ ...formData, nurseIds: selectedNurses });
 };
 
 const back = () => {
@@ -159,24 +164,23 @@ const back = () => {
           </div>
 
           <div className="field">
-              <label className="label">Pilih Perawat</label>
-                <div className="control">
-                      <div className="select">
-                        <select
-                          value={formData.nurseId}
-                          onChange={(e) => setFormData({ ...formData, nurseId: e.target.value })}
-                          required
-                        >
-                          <option value="">Pilih Perawat</option>
-                          {nurses.map((nurse) => (
-                            <option key={nurse.id} value={nurse.id}>
-                              {nurse.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                  </div>
+            <label className="label">Pilih Perawat</label>
+            <div className="control">
+              <div className="select is-multiple">
+                <select
+                  multiple
+                  value={formData.nurseIds}
+                  onChange={handleNurseSelection}
+                >
+                  {nurses.map((nurse) => (
+                    <option key={nurse.id} value={nurse.id}>
+                      {nurse.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
+          </div>
 
             <div className="field">
                 <label className="label">Keluhan</label>
