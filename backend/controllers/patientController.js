@@ -14,6 +14,7 @@ export const getPatients = async (req, res) => {
           },
           {
             model: User,
+            as: 'nurses',
             where: { role: 'nurse'},
             attributes: ['name'],
             through: { attributes: [] },
@@ -24,11 +25,15 @@ export const getPatients = async (req, res) => {
     const patientsData = patients.map(patient => {
       const patientData = patient.get({ plain: true });
 
+      if (patientData.User){
       patientData.doctorName = patientData.User.name;
       delete patientData.User;
+    }
 
-      patientData.nurseName = patientData.Users.map(user => user.name);
+      if (patientData.nurses){
+      patientData.nurseName = patientData.nurses.map(nurse => nurse.name);
       delete patientsData.Users;
+    }
 
       return patientData;
     });
