@@ -49,8 +49,8 @@ const User = sequelize.define(
     }
   );
   
-User.hasMany(Patient, { foreignKey: 'userId' });
-Patient.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(Patient, { foreignKey: 'userId', as: 'doctor' });
+Patient.belongsTo(User, { foreignKey: 'userId', as: 'doctor' });
 
 Patient.belongsToMany(User, {
     through: 'patient_nurse',
