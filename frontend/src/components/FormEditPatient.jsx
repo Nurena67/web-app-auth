@@ -5,6 +5,7 @@ import axios from "axios";
 const FormEditPatient = () => {
   const navigate = useNavigate();
   const [doctors, setDoctors] = useState([]);
+  const [nurses, setNurses] = useState([]);
   const {id} = useParams();
   const [formData, setFormData] = useState({
     name: '',
@@ -14,6 +15,7 @@ const FormEditPatient = () => {
     complaint: '',
     medicalHistory: '',
     userId:'',
+    nurseId: '',
     familyName: '',
   });
   
@@ -26,8 +28,18 @@ const FormEditPatient = () => {
           console.error("Gagal Mendapatkan Data Dokter:", error);
         }
       };
+
+      const getNurses = async () => {
+        try {
+          const response = await axios.get("https://web-app-auth.up.railway.app/nurses");
+          setNurses(response.data);
+        } catch (error) {
+          console.error("Gagal Mendapatkan Data Perawat:", error);
+        }
+      };
     
       getDoctors();
+      getNurses();
     }, []);
 
   useEffect(() => {
@@ -134,6 +146,26 @@ const FormEditPatient = () => {
               </div>
             </div>
           </div>
+
+          <div className="field">
+              <label className="label">Pilih Perawat</label>
+                <div className="control">
+                      <div className="select">
+                        <select
+                          value={formData.nurseId}
+                          onChange={(e) => setFormData({ ...formData, nurseId: e.target.value })}
+                          required
+                        >
+                          <option value="">Pilih Perawat</option>
+                          {nurses.map((nurse) => (
+                            <option key={nurse.id} value={nurse.id}>
+                              {nurse.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                  </div>
+            </div>
 
             <div className="field">
                 <label className="label">Keluhan</label>

@@ -76,6 +76,7 @@ const FormDetailPatient = () => {
             <th>Umur</th>
             <th>Jenis Kelamin</th>
             <th>Dokter</th>
+            <th>Perawat</th>
             <th>Keluhan</th>
             <th>Riwayat Penyakit</th>
             <th>Golongan Darah</th>
@@ -90,6 +91,7 @@ const FormDetailPatient = () => {
               <td>{patient.age}</td>
               <td>{patient.gender}</td>
               <td>{patient.doctorName || 'Tidak Diketahui'}</td>
+              <td>{patient.nurseNames || 'Tidak Diketahui'}</td>
               <td>{patient.complaint}</td>
               <td>{patient.medicalHistory}</td>
               <td>{patient.bloodGroup}</td>

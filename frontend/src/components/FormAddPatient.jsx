@@ -26,7 +26,7 @@ const FormAddPatient = () => {
         const response = await axios.get("https://web-app-auth.up.railway.app/doctor");
         setDoctors(response.data);
       } catch (error) {
-        console.error("Gagal Mendapatkan Data:", error);
+        console.error("Gagal Mendapatkan Data Dokter:", error);
       }
     };
 
