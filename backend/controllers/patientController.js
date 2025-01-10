@@ -12,6 +12,11 @@ export const getPatients = async (req, res) => {
             where:{role : 'doctor'} ,
             attributes: ['name'],
           },
+          {
+            model: User,
+            where:{role : 'nurse'} ,
+            attributes: ['name'],
+          }
         ],
       }
     );
