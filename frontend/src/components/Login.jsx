@@ -29,9 +29,9 @@ const Login = () => {
       <section className="hero is-fullheight is-fullwidth is-light">
       <div className="hero-body">
         <div className="container">
-          <div className="columns is-centered">
+          <div className="columns is-centered is-vcentered">
             <div className="column is-5-tablet is-4-desktop">
-              <form onSubmit={Auth} className="box" style={{ minHeight: "450px", padding: "3rem 2rem" }}>
+              <form onSubmit={Auth} className="box">
               {isError && <p className="has-text-centered">{message}</p>}
                 <h1 className="title has-text-centered">Sign In</h1>
                 <div className="field">
