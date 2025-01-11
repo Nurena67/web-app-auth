@@ -36,10 +36,7 @@ const Login = () => {
                 <h1 className="title has-text-centered">Sign In</h1>
                 <div className="field">
                   <label className="label">Email</label>
-                  <div className="control">
-                    <span className="icon is-small is-left">
-                      <i className="fas fa-envelope"></i>
-                    </span>
+                  <div className="control has-icons-left">
                     <input
                       type="email"
                       className="input"
@@ -48,15 +45,15 @@ const Login = () => {
                       placeholder="Enter your email"
                       required
                     />
+                    <span className="icon is-small is-left">
+                      <i className="fas fa-envelope"></i>
+                    </span>
                   </div>
                 </div>
 
                 <div className="field">
                   <label className="label">Password</label>
-                  <div className="control">
-                    <span className="icon is-small is-left">
-                      <i className="fas fa-lock"></i>
-                    </span>
+                  <div className="control has-icons-left">
                     <input
                       type="password"
                       className="input"
@@ -65,6 +62,9 @@ const Login = () => {
                       placeholder="********"
                       required
                     />
+                    <span className="icon is-small is-left">
+                      <i className="fas fa-lock"></i>
+                    </span>
                   </div>
                 </div>
 
