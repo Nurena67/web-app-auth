@@ -15,6 +15,6 @@ router.get('/patients/:patientId/nurses', getNursesByPatinet);
 router.get('/nurses/:nurseId/patients', getPatientsByNurse);
 router.post('/patients/:patientId/assign-nurse', assignNurseToPatient);
 router.delete('/patients/:patientId/remove-nurse', removeNurseFromPatient);
-router.put('/patients/:patientId/update-nurse', updateNursesForPatient);
+router.put('/patients/:patientId/update-nurses', updateNursesForPatient);
 
 export default router;
