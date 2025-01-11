@@ -123,3 +123,40 @@ export const getAllNurses = async (req,res) => {
     res.status(500).json({msg: error.message}); 
   }
 };
+
+export const updateNursesForPatient = async (req, res) => {
+  try {
+    const { patientId } = req.params;
+    const { nurseIds } = req.body;
+
+    const patient = await Patient.findOne({
+      where: { medicalRecordNumber: patientId },
+    });
+
+    if (!patient) return res.status(404).json({ message: "Patient not found" });
+
+    if (!nurseIds || nurseIds.length === 0) {
+      return res.status(200).json({ message: "No changes made to nurses" });
+    }
+
+    const nurses = await User.findAll({
+      where: {
+        id: nurseIds,
+        role: "nurse",
+      },
+    });
+
+    if (nurses.length !== nurseIds.length) {
+      return res.status(404).json({ message: "Some nurses not found" });
+    }
+
+    await patient.setNurses(nurses);
+
+    res.status(200).json({
+      message: `Nurses updated for patient ${patient.name}`,
+      nurses: nurses.map((nurse) => nurse.name),
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

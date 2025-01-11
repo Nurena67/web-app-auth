@@ -31,8 +31,20 @@ const FormEditPatient = () => {
           withCredentials: true
         }
       );
-      
-      setFormData(response.data);
+      const patient = response.data;
+      setFormData(
+        {
+          name: patient.name,
+          age: patient.age,
+          gender: patient.gender,
+          bloodGroup: patient.bloodGroup,
+          complaint: patient.complaint,
+          medicalHistory: patient.medicalHistory,
+          userId: patient.userId,
+          nurseIds: patient.nurses.map(nurse => nurse.id),
+          familyName: patient.familyName,
+        }
+      );
       } catch (error) {
         console.error("Error get patients:", error);
       }
@@ -84,13 +96,13 @@ const FormEditPatient = () => {
       }
     );
 
-    await axios.post(
-      `https://web-app-auth.up.railway.app/patients/${id}/assign-nurse`,
+    await axios.put(
+      `https://web-app-auth.up.railway.app/patients/${id}/update-nurses`,
       { nurseIds: formData.nurseIds },
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
@@ -107,9 +119,10 @@ const FormEditPatient = () => {
   };
   };
 
-  const handleNurseSelection = (e) => {
-    const selectedNurses = Array.from(e.target.selectedOptions, option => Number(option.value));
-    setFormData({ ...formData, nurseIds: selectedNurses });
+  const handleNurseChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions);
+    const nurseIds = selectedOptions.map((option) => option.value)
+    setFormData({ ...formData, nurseIds});
   };
   
   const backDetail = () => {
@@ -193,7 +206,7 @@ const FormEditPatient = () => {
                 <select
                   multiple
                   value={formData.nurseIds}
-                  onChange={handleNurseSelection}
+                  onChange={handleNurseChange}
                 >
                   {nurses.map((nurse) => (
                     <option key={nurse.id} value={nurse.id}>
