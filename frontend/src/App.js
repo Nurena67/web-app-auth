@@ -13,6 +13,9 @@ import EditUser from "./pages/EditUser";
 import AddPatient from "./pages/AddPatient";
 import DetailPatient from "./pages/DetailPatient";
 import EditPatient from "./pages/EditPatient";
+import NotFound from "./pages/NotFound";
+
+
 function App() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -27,6 +30,7 @@ function App() {
       <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home/>}/>
+        <Route path="*" element={<NotFound/>}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/login" element={ user? <Navigate to='/dashboard'/> : <Login/> } />
         <Route path="/dashboard" element={ <Dashboard/> }/>
