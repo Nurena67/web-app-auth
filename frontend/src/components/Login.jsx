@@ -30,7 +30,7 @@ const Login = () => {
       <div className="hero-body">
         <div className="container">
           <div className="columns is-centered">
-            <div className="column is-5-tablet is-4-desktop">
+            <div className="column is-7">
               <form onSubmit={Auth} className="box">
               {isError && <p className="has-text-centered">{message}</p>}
                 <h1 className="title has-text-centered">Sign In</h1>
