@@ -16,7 +16,7 @@ const Login = () => {
   const Auth = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setErrorMessage('');
+    setErrorMessage("");
 
     if (!isValidEmail(email)) {
       setErrorMessage("Format email tidak valid");

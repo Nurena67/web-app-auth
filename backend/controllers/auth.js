@@ -13,7 +13,7 @@ export const Login = async (req, res) => {
 
         const user = await User.findOne({ where: { email } });
         if (!user) {
-            return res.status(404).json({ msg: "Email atau Password salah" });
+            return res.status(401).json({ msg: "Email atau Password salah" });
         }
 
         const isPasswordValid = await argon2.verify(user.password, password);
