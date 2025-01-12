@@ -6,22 +6,25 @@ export const Login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
+
+        if (!email || !password) {
+            return res.status(400).json({ msg: "Email dan password wajib diisi" });
+        }
+
         const user = await User.findOne({ where: { email } });
         if (!user) {
-            return res.status(404).json({ msg: "User tidak ditemukan" });
+            return res.status(404).json({ msg: "Email atau Password salah" });
         }
 
-        // Verifikasi password menggunakan argon2
         const isPasswordValid = await argon2.verify(user.password, password);
         if (!isPasswordValid) {
-            return res.status(401).json({ msg: "Password salah" });
+            return res.status(401).json({ msg: "Email atau Password salah" });
         }
 
-        // Buat JWT Token
         const token = jwt.sign(
             { uuid: user.uuid, role: user.role },
-            process.env.JWT_SECRET, // Simpan JWT secret di environment
-            { expiresIn: '1h' } // Token berlaku selama 1 jam
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
         );
 
         res.json({ msg: "Login berhasil", token });

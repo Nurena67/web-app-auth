@@ -1,38 +1,53 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login, reset } from "../features/authSlice.js";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-  const { user, isError, isSuccess, isLoading, message } = useSelector(
-    (state) => state.auth
-  );
 
-  useEffect(() => {
-    if (user || isSuccess) {
-      navigate("/dashboard");
-    }
-    dispatch(reset());
-  }, [user, isSuccess, dispatch, navigate]);
-
-  const Auth = (e) => {
+  const Auth = async (e) => {
     e.preventDefault();
-    dispatch(login({ email, password }));
+    setIsLoading(true);
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('https://web-app-umber-omega.vercel.app/login', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed!");
+      }
+
+      localStorage.setItem('token', data.token);
+      navigate('/dashboard')
+
+    } catch (error) {
+      setErrorMessage(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div>
       <section className="hero is-fullheight is-fullwidth is-light">
-      <div className="hero-body">
-        <div className="container">
-          <div className="columns is-centered is-vcentered">
-            <div className="column is-5-tablet is-4-desktop">
-              <form onSubmit={Auth} className="box">
-              {isError && <p className="has-text-centered">{message}</p>}
+        <div className="hero-body">
+          <div className="container">
+            <div className="columns is-centered is-vcentered">
+              <div className="column is-5-tablet is-4-desktop">
+                <form onSubmit={Auth} className="box">
+                  {errorMessage && 
+                  <p className="has-text-centered has-text-danger">{errorMessage}</p>}
                 <h1 className="title has-text-centered">Sign In</h1>
                 <div className="field">
                   <label className="label">Email</label>
