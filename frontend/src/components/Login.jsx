@@ -14,7 +14,7 @@ const Login = () => {
     setErrorMessage('');
 
     try {
-      const response = await fetch('https://web-app-umber-omega.vercel.app/login', {
+      const response = await fetch('https://web-app-auth.up.railway.app/login', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
