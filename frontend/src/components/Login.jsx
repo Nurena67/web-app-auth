@@ -8,10 +8,27 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const Auth = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage('');
+
+    if (!isValidEmail(email)) {
+      setErrorMessage("Format email tidak valid");
+      return;
+    }
+
+    if (!password) {
+      setErrorMessage("Password tidak boleh kosong");
+      return;
+    }
+
+    setIsLoading(true);
 
     try {
       const response = await fetch('https://web-app-auth.up.railway.app/login', {
