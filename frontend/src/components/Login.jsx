@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -31,25 +32,20 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://web-app-auth.up.railway.app/login', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+      const response = await axios('https://web-app-auth.up.railway.app/login', {
+         email, 
+         password ,
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Login failed!");
-      }
-
-      localStorage.setItem('token', data.token);
+      localStorage.setItem('token', response.data.token);
+      
       navigate('/dashboard')
-
     } catch (error) {
-      setErrorMessage(error.message);
+      if (error.response) {
+        setErrorMessage(error.response.data.msg);
+      } else {
+        setErrorMessage("Email atau Password salah!")
+      }
     } finally {
       setIsLoading(false);
     }
