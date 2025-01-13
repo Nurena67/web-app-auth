@@ -42,10 +42,8 @@ const Login = () => {
       navigate('/dashboard')
     } catch (error) {
       if (error.response) {
-        setErrorMessage(error.response.data.msg);
-      } else {
-        setErrorMessage("Email atau Password salah!")
-      }
+        setErrorMessage(error.response.data.msg || "Email atau Password salah!");
+      };
     } finally {
       setIsLoading(false);
     }
