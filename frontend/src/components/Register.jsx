@@ -8,12 +8,11 @@ const Register = () => {
     email: "",
     password: "",
     confPassword: "",
-    role: "user", 
+    role: "nurse", 
   });
 
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -24,8 +23,24 @@ const Register = () => {
     });
   };
 
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
+    if (!isValidEmail(formData.email)) {
+      setError("Format email tidak valid.");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError("Password harus minimal 6 karakter.");
+      return;
+    }
 
     if (formData.password !== formData.confPassword) {
       setError("Password and confirm password must match.");
@@ -33,7 +48,6 @@ const Register = () => {
     }
 
     setIsLoading(true);
-    setError("");
 
     try{
         await axios.post("https://web-app-auth.up.railway.app/register", formData);
@@ -42,17 +56,24 @@ const Register = () => {
             email: "",
             password: "",
             confPassword: "",
-            role: "user", 
+            role: "nurse", 
         });
         alert('Akun Berhasil di buat!');
+
         navigate("/login")
     } catch (error) {
+
         if (error.response) {
-        setMsg(error.response.data.msg);
-    }
+        setError(error.response.data.msg || "Terjadi kesalahan. Silakan coba lagi.");
+
+      } else {
+      setError("Terjadi kesalahan server. Silakan coba lagi nanti.");
+      }
+
+    } finally{
+      setIsLoading(false);
   };
-    setIsLoading(false);
-  };
+};
 
   return (
     <div className="container">
@@ -118,11 +139,18 @@ const Register = () => {
 
         <div className="field">
           <div className="control">
-            <button className={`button is-primary ${isLoading ? 'is-loading' : ''}`} 
-            type="submit" disabled={isLoading}>
+            <button 
+            className={`button is-primary ${isLoading ? 'is-loading' : ''}`} 
+            type="submit" 
+            disabled={isLoading}
+            >
               Register
             </button>
-            <button className='button is-primary' navigate={'/'}>
+            <button 
+            className='button is-light'
+            type="button" 
+            onClick={() => navigate=('/')}
+            >
               Kembali
             </button>
           </div>
