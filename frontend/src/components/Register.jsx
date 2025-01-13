@@ -118,8 +118,12 @@ const Register = () => {
 
         <div className="field">
           <div className="control">
-            <button className={`button is-primary ${isLoading ? 'is-loading' : ''}`} type="submit" disabled={isLoading}>
+            <button className={`button is-primary ${isLoading ? 'is-loading' : ''}`} 
+            type="submit" disabled={isLoading}>
               Register
+            </button>
+            <button className='button is-primary' navigate={'/'}>
+              Kembali
             </button>
           </div>
         </div>
