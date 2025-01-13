@@ -32,7 +32,7 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios('https://web-app-auth.up.railway.app/login', {
+      const response = await axios.post('https://web-app-auth.up.railway.app/login', {
          email, 
          password ,
       });

@@ -149,7 +149,7 @@ const Register = () => {
             <button 
             className='button is-light'
             type="button" 
-            onClick={() => navigate=('/')}
+            onClick={() => navigate('/')}
             >
               Kembali
             </button>
