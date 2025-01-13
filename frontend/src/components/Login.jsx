@@ -49,7 +49,7 @@ const Login = () => {
       navigate('/dashboard')
 
     } catch (error) {
-      setErrorMessage(errorMessage);
+      setErrorMessage(error.Message);
     } finally {
       setIsLoading(false);
     }
