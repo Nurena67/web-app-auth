@@ -137,7 +137,7 @@ const Register = () => {
           </div>
         </div>
 
-        <div className="field">
+        <div className="field is-grouped">
           <div className="control">
             <button 
             className={`button is-primary ${isLoading ? 'is-loading' : ''}`} 
@@ -146,7 +146,6 @@ const Register = () => {
             >
               Register
             </button>
-            
           </div>
           <div className="control">
             <button 
