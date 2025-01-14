@@ -22,7 +22,6 @@ const FormAddPatient = () => {
   useEffect(() => {
     const getDoctors = async () => {
       try {
-        // const token = localStorage.getItem('token');
         const response = await axios.get("https://web-app-auth.up.railway.app/doctor");
         setDoctors(response.data);
       } catch (error) {
@@ -257,6 +256,6 @@ const back = () => {
     </div>
     </div>
   )
-}
+};
 
 export default FormAddPatient
