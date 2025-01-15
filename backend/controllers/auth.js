@@ -12,6 +12,10 @@ export const Login = async (req, res) => {
             return res.status(400).json({ msg: "Email dan password wajib diisi" });
         }
 
+        if (!user.isVerified) {
+          return res.status(400).json({ message: 'Please verify your email before logging in' });
+        }
+
         const user = await User.findOne({ where: { email } });
         if (!user) {
             return res.status(401).json({ msg: "Email atau Password salah" });
@@ -65,7 +69,8 @@ export const register = async (req, res) => {
       const newUser = await User.create({ 
         name, 
         email, 
-        password: hashedPassword
+        password: hashedPassword,
+        isVerified: false,
     });
   
       // Buat token verifikasi
