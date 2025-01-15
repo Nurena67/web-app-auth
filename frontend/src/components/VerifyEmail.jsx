@@ -11,7 +11,7 @@ const VerifyEmail = () => {
     const verifyToken = async () => {
       const token = new URLSearchParams(location.search).get('token');
       try {
-        const response = await axios.get(`https://your-backend-url.up.railway.app/verify-email/${token}`);
+        const response = await axios.get(`https://web-app-auth.up.railway.app/verify/${token}`);
         setMessage(response.data.message);
       } catch (error) {
         setMessage(error.response.data.message);
