@@ -14,6 +14,7 @@ import AddPatient from "./pages/AddPatient";
 import DetailPatient from "./pages/DetailPatient";
 import EditPatient from "./pages/EditPatient";
 import NotFound from "./pages/NotFound";
+import VerifyEmail from "./components/VerifyEmail";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="*" element={<NotFound/>}/>
+        <Route path="/verify/:token" element={<VerifyEmail/>}/>
         {/* <Route path="/register" element={<Register/>}/> */}
         <Route path="/login" element={ user? <Navigate to='/dashboard'/> : <Login/> } />
         <Route path="/dashboard" element={ <Dashboard/> }/>
