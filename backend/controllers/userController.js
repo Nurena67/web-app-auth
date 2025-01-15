@@ -125,30 +125,30 @@ export const deleteUser = async (req, res) => {
     }
 };
 
-export const Register = async (req, res) => {
-    const { name, email, password, role } = req.body;
+// export const Register = async (req, res) => {
+//     const { name, email, password, role } = req.body;
 
-    try {
-        const existingUser = await User.findOne({ where: { email } });
-        if (existingUser) {
-            return res.status(409).json({ msg: "Email sudah digunakan" });
-        }
+//     try {
+//         const existingUser = await User.findOne({ where: { email } });
+//         if (existingUser) {
+//             return res.status(409).json({ msg: "Email sudah digunakan" });
+//         }
 
-        const hashedPassword = await argon2.hash(password);
+//         const hashedPassword = await argon2.hash(password);
 
-        await User.create({
-            name,
-            email,
-            password: hashedPassword,
-            role: role || "nurse"
-        });
+//         await User.create({
+//             name,
+//             email,
+//             password: hashedPassword,
+//             role: role || "nurse"
+//         });
 
-        res.status(201).json({ msg: "Registrasi berhasil" });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ msg: "Terjadi kesalahan server" });
-    }
-};
+//         res.status(201).json({ msg: "Registrasi berhasil" });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ msg: "Terjadi kesalahan server" });
+//     }
+// };
 
 // Get Doctor
 export const getDoctors = async (req, res) => {
