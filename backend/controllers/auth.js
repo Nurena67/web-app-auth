@@ -77,7 +77,7 @@ export const register = async (req, res) => {
       // Kirim email verifikasi
       const emailSent = await sendVerificationEmail(email, token);
       if(!emailSent){
-        return res.status(500).jsom({message: 'Failed to send verification email.'})
+        return res.status(500).json({message: 'Failed to send verification email.'})
       }
   
       res.status(201).json({ message: 'Registration successful! Please verify your email.' });
