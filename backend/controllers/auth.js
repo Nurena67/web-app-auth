@@ -12,20 +12,21 @@ export const Login = async (req, res) => {
             return res.status(400).json({ msg: "Email dan password wajib diisi" });
         }
 
+        
+        const user = await User.findOne({ where: { email } });
+        if (!user) {
+          return res.status(401).json({ msg: "Email atau Password salah" });
+        }
+        
+        const isPasswordValid = await argon2.verify(user.password, password);
+        if (!isPasswordValid) {
+          return res.status(401).json({ msg: "Email atau Password salah" });
+        }
+        
         if (!user.isVerified) {
           return res.status(400).json({ message: 'Please verify your email before logging in' });
         }
-
-        const user = await User.findOne({ where: { email } });
-        if (!user) {
-            return res.status(401).json({ msg: "Email atau Password salah" });
-        }
-
-        const isPasswordValid = await argon2.verify(user.password, password);
-        if (!isPasswordValid) {
-            return res.status(401).json({ msg: "Email atau Password salah" });
-        }
-
+        
         const token = jwt.sign(
             { uuid: user.uuid, role: user.role },
             process.env.JWT_SECRET,

@@ -11,7 +11,7 @@ const VerifyEmail = () => {
     const verifyToken = async () => {
       const token = new URLSearchParams(location.search).get('token');
       try {
-        const response = await axios.get(`https://your-backend-url.up.railway.app/verify-email?token=${token}`);
+        const response = await axios.get(`https://your-backend-url.up.railway.app/verify-email/${token}`);
         setMessage(response.data.message);
       } catch (error) {
         setMessage(error.response.data.message);
@@ -21,16 +21,16 @@ const VerifyEmail = () => {
     verifyToken();
   }, [location]);
 
-  const goHome = () => {
-    navigate('/')
+  const goLogin = () => {
+    navigate('/login')
   };
 
   return (
     <div className="container">
       <h1>Email Verification</h1>
       <p>{message}</p>
-      <button onClick={goHome} className="button is-link is-medium">
-                Back to Home
+      <button onClick={goLogin} className="button is-link is-medium">
+                Back to Login Page
         </button>
     </div>
   );

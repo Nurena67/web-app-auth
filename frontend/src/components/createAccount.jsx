@@ -50,7 +50,6 @@ const CreateAccount = () => {
         }, 2000);
       }
 
-      navigate('/login'); // Arahkan ke halaman login setelah registrasi berhasil
     } catch (error) {
       if (error.response) {
         setErrorMessage(error.response.data.msg || "Terjadi kesalahan, coba lagi.");
