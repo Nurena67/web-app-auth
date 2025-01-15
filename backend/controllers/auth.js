@@ -59,15 +59,26 @@ export const register = async (req, res) => {
       // Cek apakah email sudah terdaftar
       const existingUser = await User.findOne({ where: { email } });
       if (existingUser) return res.status(400).json({ message: 'Email already registered' });
-  
+
+      const hashedPassword = await argon2.hash(password);
       // Buat user baru
-      const newUser = await User.create({ name, email, password });
+      const newUser = await User.create({ 
+        name, 
+        email, 
+        password: hashedPassword
+    });
   
       // Buat token verifikasi
-      const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign(
+        {id: newUser.id },
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' });
   
       // Kirim email verifikasi
-      await sendVerificationEmail(email, token);
+      const emailSent = await sendVerificationEmail(email, token);
+      if(!emailSent){
+        return res.status(500).jsom({message: 'Failed to send verification email.'})
+      }
   
       res.status(201).json({ message: 'Registration successful! Please verify your email.' });
     } catch (error) {

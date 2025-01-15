@@ -5,7 +5,6 @@ import {
     createUser,
     updateUser,
     deleteUser,
-    Register,
     getDoctors
    } from '../controllers/userController.js'
 import { verifyUser, adminOnly} from '../middleware/AuthUser.js'
@@ -15,7 +14,7 @@ router.get('/users', verifyUser, adminOnly, getUsers);
 router.get('/doctor', getDoctors);
 router.get('/users/:id', verifyUser, adminOnly, getUserById);
 router.post('/users', verifyUser, adminOnly, createUser);
-// router.post('/register', Register);
+
 router.put('/users/:id', verifyUser, adminOnly, updateUser);
 router.delete('/users/:id', verifyUser, adminOnly, deleteUser);
 
