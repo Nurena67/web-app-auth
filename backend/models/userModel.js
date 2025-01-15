@@ -25,6 +25,7 @@ const User = sequelize.define(
         email:{
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
             validate:{
                 notEmpty: true,
                 isEmail: true
@@ -42,10 +43,14 @@ const User = sequelize.define(
             allowNull: false,
             defaultValue: 'nurse',
         },
+        isVerified: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+          },
     },
     {
       timestamps: true,
-      freezeTableName: true, // Prevent Sequelize from pluralizing table names
+      freezeTableName: true,
     }
   );
   
