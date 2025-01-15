@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const VerifyEmail = () => {
   const [message, setMessage] = useState('');
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -20,10 +21,17 @@ const VerifyEmail = () => {
     verifyToken();
   }, [location]);
 
+  const goHome = () => {
+    navigate('/')
+  };
+
   return (
     <div className="container">
       <h1>Email Verification</h1>
       <p>{message}</p>
+      <button onClick={goHome} className="button is-link is-medium">
+                Back to Home
+        </button>
     </div>
   );
 };
