@@ -70,7 +70,7 @@ export const register = async (req, res) => {
 
       const verificationToken = crypto.randomBytes(32).toString('hex');
      
-      const User = await User.create({ 
+      const newUser = await User.create({ 
         name, 
         email, 
         password: hashedPassword,
