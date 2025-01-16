@@ -11,18 +11,23 @@ export const sendVerificationEmail = async (email, token) => {
           });
         
           const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: `"web-app" <${process.env.EMAIL_USER}>`,
             to: email,
             subject: 'Verify Your Email',
-            html: `<p>Please verify your email by clicking the link below:</p>
-                   <a href="${process.env.CLIENT_URL}/verify-email/${token}">Verify Email</a>`
+            html: `
+                <p>Hi,</p>
+                <p>Thank you for registering. Please verify your email by clicking the link below:</p>
+                <a href="${process.env.CLIENT_URL}/verify-email/${token}">${process.env.CLIENT_URL}/verify-email/${token}</a>
+                <p>If you did not request this, please ignore this email.</p>
+            `,
           };
         
           await transporter.sendMail(mailOptions);
+          console.log(`Verification email sent to ${email}`);
           return true;
         
     } catch (error) {
-        console.error('Error sending email:', error);
-    return false;
+      console.error('Error sending verification email:', error.message);
+      throw new Error('Could not send verification email');
     }
 };
