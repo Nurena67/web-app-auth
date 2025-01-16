@@ -11,7 +11,7 @@ const VerifyEmail = () => {
   useEffect(() => {
     const verifyToken = async () => {      
       try {
-        const response = await axios.get('https://web-app-auth.up.railway.app/verify-email',{token});
+        const response = await axios.post('https://web-app-auth.up.railway.app/verify-email',{token});
         if (response.data.success) {
           setMessage('Email successfully verified! You can now log in.');
         } else {

@@ -13,6 +13,6 @@ router.post('/login', Login);
 router.delete('/logout', logOut);
 
 router.post('/register', register);
-router.get('/verify-email', verifyEmail);
+router.post('/verify-email', verifyEmail);
 
 export default router;
