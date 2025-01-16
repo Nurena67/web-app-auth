@@ -10,6 +10,8 @@ const VerifyEmail = () => {
   useEffect(() => {
     const verifyToken = async () => {
       const token = new URLSearchParams(location.search).get('token');
+      console.log(token);
+      
       try {
         const response = await axios.get(`https://web-app-auth.up.railway.app/verify/${token}`);
         setMessage(response.data.message);
