@@ -1,27 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
 const VerifyEmail = () => {
-  const [message, setMessage] = useState('');
-  const location = useLocation();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const token = searchParams.get('token');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
-    const verifyToken = async () => {
-      const token = new URLSearchParams(location.search).get('token');
-      console.log(token);
-      
+    const verifyToken = async () => {      
       try {
-        const response = await axios.get(`https://web-app-auth.up.railway.app/verify/${token}`);
-        setMessage(response.data.message);
+        const response = await axios.get('https://web-app-auth.up.railway.app/verify-email',{token});
+        if (response.data.success) {
+          setMessage('Email successfully verified! You can now log in.');
+        } else {
+          setMessage(response.data.message || 'Verification failed.');
+        }
       } catch (error) {
-        setMessage(error.response.data.message);
+        setMessage('An error occurred during verification. Please try again.');
       }
     };
 
-    verifyToken();
-  }, [location]);
+    if (token) {
+      verifyToken();
+    } else {
+      setMessage('Invalid verification link.');
+    }
+
+  }, [token]);
 
   const goLogin = () => {
     navigate('/login')
