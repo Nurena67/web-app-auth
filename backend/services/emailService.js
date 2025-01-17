@@ -50,6 +50,7 @@ export const sendVerificationForgotPass = async (email, otp) => {
             html: `
                 <p>Hi,</p>
                 <p>Your OTP is ${otp}. It is valid for 15 minutes.</p>
+                <a href="${process.env.CLIENT_URL}/verify-otp> Clik Here to Reset Your Password</a>
                 <p>If you did not request this, please ignore this email.</p>
             `,
           };

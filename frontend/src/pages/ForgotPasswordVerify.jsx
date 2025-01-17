@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ForgotPasswordVerify = () => {
@@ -7,6 +8,7 @@ const ForgotPasswordVerify = () => {
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
@@ -18,7 +20,12 @@ const ForgotPasswordVerify = () => {
         "https://web-app-auth.up.railway.app/verify-otp",
         { email, otp, newPassword }
       );
+
       setMessage(response.data.message);
+      setTimeout(() => {
+        navigate('/login'); 
+      }, 3000);
+
     } catch (err) {
       setError(true);
       setMessage(err.response?.data?.message || "An error occurred");
