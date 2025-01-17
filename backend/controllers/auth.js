@@ -5,7 +5,8 @@ import crypto from 'crypto';
 import User from '../models/userModel.js';
 
 
-import { sendVerificationEmail} from '../services/emailService.js'
+import { sendVerificationEmail, sendVerificationForgotPass} from '../services/emailService.js'
+import { where } from 'sequelize';
 
 export const Login = async (req, res) => {
     const { email, password } = req.body;
@@ -87,19 +88,19 @@ export const register = async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
-  };
+};
 
-  export const verifyEmail = async (req, res) => {
+export const verifyEmail = async (req, res) => {
     const { token } = req.params;
     
     try {
       const user = await User.findOne({ where: { verificationToken: token } });
 
+      if (user.isVerified) return res.status(400).json({ message: 'Email already verified' });
+      
       if (!user) {
       return res.status(400).json({ message: 'Invalid or expired token.' });}
-  
-      if (user.isVerified) return res.status(400).json({ message: 'Email already verified' });
-  
+      
       user.isVerified = true;
       user.verificationToken = null;
       await user.save();
@@ -108,5 +109,57 @@ export const register = async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: 'Invalid or expired token' });
     }
-  };
+};
+
+export const forgotPassword = async (req,res) => {
+  const {email} = req.body;
+
+  try {
+    const user = await User.findOne({where: {email} });
+    if(!user) {
+      return res.status(404).json({message: "Email not found..!"}); 
+    }
+
+    const otp = crypto.randomInt(100000, 999999);
+
+    user.resetOtp = otp;
+    user.otpExpiry = Date.now() + 15 * 60 * 1000;
+    await user.save();
+
+    const emailSent = await sendVerificationForgotPass(email, otp);
+    if(!emailSent){
+      return res.status(500).json({message: 'Failed to send OTP reset password.'})
+    }
+
+    res.status(200).json({ message: "OTP sent to your email" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const verifyOtpAndResetPassword = async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+
+  try {
+    const user = await User.findOne({where: {email} });
+    if(!user) {
+      return res.status(404).json({message: "Email not found..!"}); 
+    }
+
+    if (user.resetOtp !== parseInt(otp) || Date.now() > user.otpExpiry) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    const hashedPassword = await argon2.hash(newPassword);
+
+    user.password = hashedPassword;
+    user.resetOtp = null;
+    user.otpExpiry = null;
+    await user.save();
+
+    res.status(200).json({ message: "Password reset successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
   

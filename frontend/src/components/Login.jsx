@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 const Login = () => {
@@ -99,6 +99,21 @@ const Login = () => {
                   {isLoading ? "Loading..." : "Login"}
                   </button>
                 </div>
+
+                <div className="has-text-centered">
+                    <p>
+                      Belum punya akun?{" "}
+                      <Link to="/register" className="has-text-primary">
+                        Daftar di sini
+                      </Link>
+                    </p>
+                    <p>
+                      Lupa password?{" "}
+                      <Link to="/forgot-password" className="has-text-primary">
+                        Reset password
+                      </Link>
+                    </p>
+                  </div>
               </form>
             </div>
           </div>
