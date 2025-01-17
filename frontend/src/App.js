@@ -16,6 +16,8 @@ import EditPatient from "./pages/EditPatient";
 import NotFound from "./pages/NotFound";
 import VerifyEmail from "./components/VerifyEmail";
 import CreateAccount from "./components/createAccount";
+import ForgotPasswordRequest from "./pages/ForgotPasswordRequest";
+import ForgotPasswordVerify from "./pages/ForgotPasswordVerify";
 
 
 function App() {
@@ -35,6 +37,8 @@ function App() {
         <Route path="*" element={<NotFound/>}/>
         <Route path="/verify-email/:token" element={<VerifyEmail/>}/>
         <Route path="/register" element={<CreateAccount/>}/>
+        <Route path="/forgot-password" element={<ForgotPasswordRequest/>}/>
+        <Route path="/verify-otp" element={<ForgotPasswordVerify/>}/>
         <Route path="/login" element={ user? <Navigate to='/dashboard'/> : <Login/> } />
         <Route path="/dashboard" element={ <Dashboard/> }/>
         <Route path="/patients" element={<Patients/>}/>
