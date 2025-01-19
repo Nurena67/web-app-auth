@@ -19,17 +19,17 @@ export const login = createAsyncThunk('auth/login', async ({email, password}, { 
 
 
 export const checkLogin = createAsyncThunk('auth/checkLogin', async (_, { rejectWithValue }) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return rejectWithValue('Not authenticated');
+  }
+  
   try {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      throw new Error("No token found");
-    }
-
     const response = await axiosInstance.get('/me', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }, withCredentials: true
+      headers: { Authorization: `Bearer ${token}`}, 
+      withCredentials: true
     });
+    
     return { user : response.data }; 
   } catch (error) {
     const message = error.response?.data?.msg || "Not authenticated";
