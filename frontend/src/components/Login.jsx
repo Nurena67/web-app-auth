@@ -1,52 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { checkLogin, reset } from "../features/authSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (isError) {
+      setErrorMessage(message);
+    }
+
+    if (isSuccess || user) {
+      navigate("/dashboard");
+    }
+
+    dispatch(reset());
+  }, [isError, isSuccess, user, message, navigate, dispatch]);
 
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const Auth = async (e) => {
+  const Auth = (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setErrorMessage("");
 
     if (!isValidEmail(email)) {
       setErrorMessage("Format email tidak valid");
       return;
     }
 
-    if (!password) {
-      setErrorMessage("Password tidak boleh kosong");
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      const response = await axios.post('https://web-app-auth.up.railway.app/login', {
-         email, 
-         password ,
-      });
-
-      localStorage.setItem('token', response.data.token);
-      
-      navigate('/dashboard')
-    } catch (error) {
-      if (error.response) {
-        setErrorMessage(error.response.data.msg || "Email atau Password salah!");
-      };
-    } finally {
-      setIsLoading(false);
-    }
+    dispatch(checkLogin({ email, password }));
   };
 
   return (
@@ -95,7 +88,7 @@ const Login = () => {
                 </div>
 
                 <div className="field">
-                  <button className="button is-primary is-fullwidth">
+                  <button className="button is-primary is-fullwidth" disabled={isLoading}>
                   {isLoading ? "Loading..." : "Login"}
                   </button>
                 </div>
@@ -124,4 +117,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Login;

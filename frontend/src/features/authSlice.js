@@ -1,27 +1,31 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axiosInstance from '../features/axiosInstance.js'
 
-// Async Thunks
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+
 export const login = createAsyncThunk('auth/login', async ({email, password}, { rejectWithValue }) => {
   try {
-    const response = await axios.post('https://web-app-auth.up.railway.app/login', {
+    const response = await axiosInstance('https://web-app-auth.up.railway.app/login', 
+    {
       email,
       password
-    }, {
-      withCredentials: true
-    });
+    }, 
+    { withCredentials: true });
+    
     const token = response.data.token;
     localStorage.setItem('token',token);
+
     return { user : response.data.user, token}; 
   } catch (error) {
     return rejectWithValue(error.response.data);
   }
 });
 
+
 export const checkLogin = createAsyncThunk('auth/checkLogin', async (_, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.get('https://web-app-auth.up.railway.app/me', {
+    const response = await axiosInstance('https://web-app-auth.up.railway.app/me', {
       headers: {
         Authorization: `Bearer ${token}`,
       }, withCredentials: true
@@ -36,7 +40,7 @@ export const logout = createAsyncThunk('auth/logout', async () => {
   try {
     const token = localStorage.getItem("token");
 
-    await axios.delete("https://web-app-auth.up.railway.app/logout", {
+    await axiosInstance("https://web-app-auth.up.railway.app/logout", {
       headers: {
         Authorization: `Bearer ${token}`,
       }, withCredentials: true
