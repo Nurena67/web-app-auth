@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.get('/me', verifyUser, Me);
 router.post('/login', Login);
-router.delete('/logout', logOut);
+router.post('/logout', logOut);
 
 router.post('/register', register);
 router.get('/verify-email/:token', verifyEmail);

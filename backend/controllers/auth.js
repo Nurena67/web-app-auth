@@ -6,7 +6,6 @@ import User from '../models/userModel.js';
 
 
 import { sendVerificationEmail, sendVerificationForgotPass} from '../services/emailService.js'
-import { where } from 'sequelize';
 
 export const Login = async (req, res) => {
     const { email, password } = req.body;
@@ -58,7 +57,12 @@ export const Me = async (req, res) => {
 };
 
 export const logOut = (req, res) => {
+  try {
     res.status(200).json({ msg: "Anda telah logout" });
+  } catch (error) {
+    console.error("Error during logout:", error);
+    res.status(500).json({ msg: "Terjadi kesalahan saat logout" });
+  }
 };
 
 export const register = async (req, res) => {

@@ -21,33 +21,39 @@ export const login = createAsyncThunk('auth/login', async ({email, password}, { 
 export const checkLogin = createAsyncThunk('auth/checkLogin', async (_, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axiosInstance('https://web-app-auth.up.railway.app/me', {
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+    const response = await axiosInstance.get('/me', {
       headers: {
         Authorization: `Bearer ${token}`,
       }, withCredentials: true
     });
     return { user : response.data }; 
   } catch (error) {
-    return rejectWithValue(error.response?.data?.msg || "Not authenticated");
+    const message = error.response?.data?.msg || "Not authenticated";
+    return rejectWithValue(message);
   }
 });
 
-export const logout = createAsyncThunk('auth/logout', async () => {
+export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem("token");
 
-    await axiosInstance("https://web-app-auth.up.railway.app/logout", {
-      headers: {
+    await axiosInstance.post("logout", {} ,
+    { headers: 
+      {
         Authorization: `Bearer ${token}`,
-      }, withCredentials: true
+      }, withCredentials: false,
     });
 
-    // Menghapus token dari localStorage
     localStorage.removeItem("token");
 
     return {};
   } catch (error) {
-    console.error("Logout failed:", error);
+    const message = error.response?.data?.msg || "Logout failed";
+    return rejectWithValue(message);
   }
 });
 
