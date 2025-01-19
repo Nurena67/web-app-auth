@@ -5,19 +5,15 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const login = createAsyncThunk('auth/login', async ({email, password}, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance('https://web-app-auth.up.railway.app/login', 
-    {
-      email,
-      password
-    }, 
-    { withCredentials: true });
+    const response = await axiosInstance.post('/login', { email, password});
     
     const token = response.data.token;
     localStorage.setItem('token',token);
 
     return { user : response.data.user, token}; 
   } catch (error) {
-    return rejectWithValue(error.response.data);
+    const message = error.response?.data?.msg || 'Terjadi kesalahan jaringan';
+    return rejectWithValue({ msg: message });
   }
 });
 
