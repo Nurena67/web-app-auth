@@ -40,8 +40,12 @@ function App() {
   }
   
   if (isError) {
-    // Jika error (misalnya token tidak valid), bisa arahkan ke halaman login atau tampilkan pesan error
-    return <Navigate to="/login" />;
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <p>Error occurred! Please log in again.</p>
+        <Navigate to="/login" /> {/* Pengalihan ke halaman login jika terjadi error */}
+      </div>
+    );
   }
 
   return (

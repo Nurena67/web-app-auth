@@ -24,6 +24,7 @@ export const checkLogin = createAsyncThunk('auth/checkLogin', async (_, { reject
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Token tidak ditemukan');
 
+    // Pengecekan login hanya dilakukan jika token ada
     const response = await axios.get('https://web-app-auth.up.railway.app/users', {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -38,13 +39,13 @@ export const checkLogin = createAsyncThunk('auth/checkLogin', async (_, { reject
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    token: null, // Token JWT
-    user: null, // Data user (misalnya nama, email, role)
+    token: null,
+    user: null,
     isLoading: false,
     isError: false,
-    isSuccess: false, // Status loading
+    isSuccess: false,
     error: null,
-    message: null, // Error message (jika ada)
+    message: null,
   },
   reducers: {
     logout(state) {
@@ -54,7 +55,7 @@ const authSlice = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.message = null;
-      localStorage.removeItem('token'); // Hapus token dari localStorage saat logout
+      localStorage.removeItem('token');
     },
     reset(state) {
       state.isLoading = false;
@@ -66,6 +67,7 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Login
       .addCase(login.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
@@ -83,6 +85,7 @@ const authSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
+      // Check Login
       .addCase(checkLogin.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
