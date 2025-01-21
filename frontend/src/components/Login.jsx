@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login, reset } from "../features/authSlice";
+import { login, reset} from "../features/authSlice.js"
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -10,23 +10,19 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
+  const { isLoading, isError, error, isSuccess, message, isAuthenticated } = useSelector(
     (state) => state.auth
   );
 
   useEffect(() => {
-    if (isError) {
-      setErrorMessage(message);
+    if (isAuthenticated) {
+      navigate('/dashboard');
     }
-
-    if (isSuccess || user) {
-      navigate("/dashboard");
-    }
-
+    
     return () => {
       dispatch(reset());
     };
-  }, [isError, isSuccess, user, message, navigate, dispatch]);
+  }, [isAuthenticated, isSuccess, dispatch, navigate]);
 
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -44,6 +40,17 @@ const Login = () => {
     dispatch(login({ email, password }));
   };
 
+  useEffect(() => {
+    
+    if (isError) {
+      setErrorMessage(error);
+    }
+
+    if (isSuccess) {
+      setErrorMessage(""); 
+    }
+  }, [isError, error, isSuccess]);
+
   return (
     <div>
       <section className="hero is-fullheight is-fullwidth is-light">
@@ -54,6 +61,11 @@ const Login = () => {
                 <form onSubmit={Auth} className="box">
                   {errorMessage && 
                   <p className="has-text-centered has-text-danger">{errorMessage}</p>}
+
+                  {message && !isError && (
+                    <p className="has-text-centered has-text-success">{message}</p>
+                  )}
+                  
                 <h1 className="title has-text-centered">Sign In</h1>
                 <div className="field">
                   <label className="label">Email</label>

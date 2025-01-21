@@ -39,25 +39,24 @@ export const checkLogin = createAsyncThunk('auth/checkLogin', async (_, { reject
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    token: null,
+    token: localStorage.getItem('token') || null,
     user: null,
+    isAuthenticated: !!localStorage.getItem('token'),
     isLoading: false,
     isError: false,
     isSuccess: false,
+    loading: false,
     error: null,
     message: null,
   },
   reducers: {
-    logout(state) {
+    logout: (state) => {
       state.token = null;
+      state.isAuthenticated = false;
       state.user = null;
-      state.isLoading = false;
-      state.isError = false;
-      state.isSuccess = false;
-      state.message = null;
       localStorage.removeItem('token');
     },
-    reset(state) {
+    reset: (state) => {
       state.isLoading = false;
       state.isError = false;
       state.isSuccess = false;
@@ -77,8 +76,10 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.token = action.payload.token;
-        state.user = action.payload.user;
+        state.isAuthenticated = true;
+        state.token = action.payload;
+        localStorage.setItem('token', action.payload);
+        state.message = 'Login successful';
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -90,20 +91,21 @@ const authSlice = createSlice({
         state.isLoading = true;
         state.isError = false;
         state.isSuccess = false;
+        state.message = null;
       })
       .addCase(checkLogin.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+        state.isAuthenticated = true;
         state.token = action.payload.token;
         state.user = action.payload.user;
+        state.message = 'User authenticated';
       })
       .addCase(checkLogin.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        state.token = null;
-        state.user = null;
-        localStorage.removeItem('token');
+        state.isAuthenticated = false;
       });
   },
 });
