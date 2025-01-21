@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { checkLogin } from "./features/authSlice";
 import Login from "./components/Login";
-import Register from "./components/Register";
 import Home from "./components/Home";
 import Dashboard from "./pages/Dashboard";
 import Patients from "./pages/Patients";
@@ -22,13 +21,21 @@ import ForgotPasswordVerify from "./pages/ForgotPasswordVerify";
 
 function App() {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const { user, isLoading } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
       dispatch(checkLogin());
-    }
   }, [dispatch]);
+
+  if (isLoading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+  
+
   return (
     <div>
       <BrowserRouter>
@@ -40,9 +47,9 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPasswordRequest/>}/>
         <Route path="/verify-otp" element={<ForgotPasswordVerify/>}/>
         <Route path="/login" element={ user? <Navigate to='/dashboard'/> : <Login/> } />
-        <Route path="/dashboard" element={ <Dashboard/> }/>
-        <Route path="/patients" element={<Patients/>}/>
-        <Route path="/users" element={<Users/>}/>
+        <Route path="/dashboard" element={ user? <Dashboard/> : <Navigate to='/login' /> }/>
+        <Route path="/patients" element={ user? <Patients/> : <Navigate to='/login' />}/>
+        <Route path="/users" element={ user && user.role === 'admin' ? <Users/> : <Navigate to='/login' /> }/>
         <Route path="/users/add" element={<AddUser/>}/>
         <Route path="/users/edit/:id" element={<EditUser/>}/>
         <Route path="/patients/add" element={<AddPatient/>}/>
