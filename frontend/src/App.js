@@ -21,11 +21,15 @@ import ForgotPasswordVerify from "./pages/ForgotPasswordVerify";
 
 function App() {
   const dispatch = useDispatch();
-  const { user, isLoading } = useSelector((state) => state.auth);
+  const { user, isLoading, isError } = useSelector((state) => state.auth);
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
       dispatch(checkLogin());
+    }
   }, [dispatch]);
+
 
   if (isLoading) {
     return (
@@ -35,6 +39,10 @@ function App() {
     );
   }
   
+  if (isError) {
+    // Jika error (misalnya token tidak valid), bisa arahkan ke halaman login atau tampilkan pesan error
+    return <Navigate to="/login" />;
+  }
 
   return (
     <div>
