@@ -40,54 +40,67 @@ const authSlice = createSlice({
   initialState: {
     token: null, // Token JWT
     user: null, // Data user (misalnya nama, email, role)
-    isLoading: false, // Status loading
-    error: null, // Error message (jika ada)
+    isLoading: false,
+    isError: false,
+    isSuccess: false, // Status loading
+    error: null,
+    message: null, // Error message (jika ada)
   },
   reducers: {
     logout(state) {
       state.token = null;
       state.user = null;
+      state.isLoading = false;
+      state.isError = false;
+      state.isSuccess = false;
+      state.message = null;
       localStorage.removeItem('token'); // Hapus token dari localStorage saat logout
     },
     reset(state) {
-      state.token = null;
-      state.user = null;
       state.isLoading = false;
+      state.isError = false;
+      state.isSuccess = false;
       state.error = null;
+      state.message = null;
     },
   },
   extraReducers: (builder) => {
     builder
-      // Login
       .addCase(login.pending, (state) => {
         state.isLoading = true;
-        state.error = null;
+        state.isError = false;
+        state.isSuccess = false;
+        state.message = null;
       })
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isSuccess = true;
         state.token = action.payload.token;
         state.user = action.payload.user;
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload;
+        state.isError = true;
+        state.message = action.payload;
       })
-      // Check Login
       .addCase(checkLogin.pending, (state) => {
         state.isLoading = true;
-        state.error = null;
+        state.isError = false;
+        state.isSuccess = false;
       })
       .addCase(checkLogin.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isSuccess = true;
         state.token = action.payload.token;
         state.user = action.payload.user;
       })
       .addCase(checkLogin.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload;
+        state.isError = true;
+        state.message = action.payload;
         state.token = null;
         state.user = null;
-        localStorage.removeItem('token'); // Hapus token jika verifikasi gagal
+        localStorage.removeItem('token');
       });
   },
 });
