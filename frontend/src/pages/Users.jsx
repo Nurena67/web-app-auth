@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Layout from "./Layout";
 import Userlist from "../components/UserList";
 import { useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 
 const Users = () => {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const Users = () => {
       }
 
       try {
-        const decodedToken = jwt_decode(token);
+        const decodedToken = jwtDecode(token);
         if (decodedToken.role !== "admin") {
           navigate("/dashboard");
         }
