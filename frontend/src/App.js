@@ -21,28 +21,17 @@ import ForgotPasswordVerify from "./pages/ForgotPasswordVerify";
 
 function App() {
   const dispatch = useDispatch();
-  const { user, isLoading, isError } = useSelector((state) => state.auth);
+  const { user, isLoading } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
       dispatch(checkLogin());
-    }
-  }, [dispatch]);
+    }, [dispatch]);
 
 
   if (isLoading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
         <p>Loading...</p>
-      </div>
-    );
-  }
-  
-  if (isError) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <p>Error occurred! Please log in again.</p>
       </div>
     );
   }
