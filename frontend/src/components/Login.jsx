@@ -17,23 +17,26 @@ const Login = () => {
   const Auth = async (e) => {
     e.preventDefault();
     setErrorMessage("");
+    setIsLoading(true);
     
     if (!isValidEmail(email)) {
       setErrorMessage("Format email tidak valid");
+      setIsLoading(false);
       return;
     }
 
     if (!password) {
       setErrorMessage("Password tidak boleh kosong");
+      setIsLoading(false);
       return;
     }
-    setIsLoading(true);
 
     try {
       const response = await axios.post('https://web-app-auth.up.railway.app/login', {
         email, 
         password ,
-     });
+     },
+     { withCredentials: true });
 
      if (response.data.token) {
      localStorage.setItem('token', response.data.token);

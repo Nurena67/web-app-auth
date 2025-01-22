@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { IoPerson, IoPricetag, IoHome, IoLogOut } from "react-icons/io5";
+import { NavLink } from "react-router-dom";
+import { IoPerson, IoPricetag, IoHome } from "react-icons/io5";
 
 
 const Sidebar = () => {
-  const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -13,12 +12,6 @@ const Sidebar = () => {
       setUser(JSON.parse(userData));
     }
   }, []);
-
-  const Logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/login");
-  };
 
   return (
     <div>
@@ -48,15 +41,6 @@ const Sidebar = () => {
             </ul>
           </div>
         )}
-
-        <p className="menu-label">Settings</p>
-        <ul className="menu-list">
-          <li>
-            <button onClick={Logout} className="button is-white">
-              <IoLogOut /> Logout
-            </button>
-          </li>
-        </ul>
       </aside>
     </div>
   );
