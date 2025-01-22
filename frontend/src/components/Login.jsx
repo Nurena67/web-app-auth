@@ -1,55 +1,53 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { login, reset} from "../features/authSlice.js"
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const { isLoading, isError, error, isSuccess, message, isAuthenticated } = useSelector(
-    (state) => state.auth
-  );
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/dashboard');
-    }
-    
-    return () => {
-      dispatch(reset());
-    };
-  }, [isAuthenticated, isSuccess, dispatch, navigate]);
 
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const Auth = (e) => {
+  const Auth = async (e) => {
     e.preventDefault();
 
+    setIsLoading(true);
+    setErrorMessage("");
+    
     if (!isValidEmail(email)) {
       setErrorMessage("Format email tidak valid");
       return;
     }
 
-    dispatch(login({ email, password }));
+    if (!password) {
+      setErrorMessage("Password tidak boleh kosong");
+      return;
+    }
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post('https://web-app-auth.up.railway.app/login', {
+        email, 
+        password ,
+     });
+
+     localStorage.setItem('token', response.data.token);
+     
+     navigate('/dashboard')
+    } catch (error) {
+      if (error.response) {
+        setErrorMessage(error.response.data.msg || "Email atau Password salah!");
+      };
+    } finally {
+      setIsLoading(false);
+    }
   };
-
-  useEffect(() => {
-    
-    if (isError) {
-      setErrorMessage(error);
-    }
-
-    if (isSuccess) {
-      setErrorMessage(""); 
-    }
-  }, [isError, error, isSuccess]);
 
   return (
     <div>
@@ -62,10 +60,6 @@ const Login = () => {
                   {errorMessage && 
                   <p className="has-text-centered has-text-danger">{errorMessage}</p>}
 
-                  {message && !isError && (
-                    <p className="has-text-centered has-text-success">{message}</p>
-                  )}
-                  
                 <h1 className="title has-text-centered">Sign In</h1>
                 <div className="field">
                   <label className="label">Email</label>
@@ -102,7 +96,7 @@ const Login = () => {
                 </div>
 
                 <div className="field">
-                  <button className="button is-primary is-fullwidth" disabled={isLoading}>
+                  <button className="button is-primary is-fullwidth">
                   {isLoading ? "Loading..." : "Login"}
                   </button>
                 </div>
@@ -127,9 +121,9 @@ const Login = () => {
         </div>
       </div>
     </section>
-    </div>
+  </div>
   )
-}
+};
 
 export default Login;
 
