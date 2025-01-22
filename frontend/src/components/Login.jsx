@@ -1,57 +1,35 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link} from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [msg, setMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
 
   const Auth = async (e) => {
     e.preventDefault();
-    setErrorMessage("");
-    setIsLoading(true);
-    
-    if (!isValidEmail(email)) {
-      setErrorMessage("Format email tidak valid");
-      setIsLoading(false);
-      return;
-    }
-
-    if (!password) {
-      setErrorMessage("Password tidak boleh kosong");
-      setIsLoading(false);
-      return;
-    }
-
     try {
       const response = await axios.post('https://web-app-auth.up.railway.app/login', {
         email, 
         password ,
-     },
-     { withCredentials: true });
-
-     if (response.data.token) {
-     localStorage.setItem('token', response.data.token);
-     }
-
-     navigate('/dashboard')
+      });
+      
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+      }
+      
+      navigate('/dashboard')
     } catch (error) {
       if (error.response) {
-        setErrorMessage(error.response.data.msg || "Email atau Password salah!");
+        setMsg(error.response.data.msg || "Email atau Password salah!");
       };
-    } finally {
-      setIsLoading(false);
     }
   };
-
+  
   return (
     <div>
       <section className="hero is-fullheight is-fullwidth is-light">
@@ -60,8 +38,8 @@ const Login = () => {
             <div className="columns is-centered is-vcentered">
               <div className="column is-5-tablet is-4-desktop">
                 <form onSubmit={Auth} className="box">
-                  {errorMessage && 
-                  <p className="has-text-centered has-text-danger">{errorMessage}</p>}
+                  {msg && 
+                  <p className="has-text-centered has-text-danger">{msg}</p>}
 
                 <h1 className="title has-text-centered">Sign In</h1>
                 <div className="field">
