@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import Login from "./components/Login";
 import Home from "./components/Home";
 import Dashboard from "./pages/Dashboard";
@@ -27,7 +27,7 @@ function App() {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const decodedToken = jwt_decode(token);
+          const decodedToken = jwtDecode(token);
           setUser(decodedToken);
         } catch (error) {
           console.error("Invalid token:", error);

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Layout from "./Layout";
 import FormAddUser from "../components/FormAddUser";
 import { useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const AddUser = () => {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const AddUser = () => {
       }
 
       try {
-        const decoded = jwt_decode(token);
+        const decoded = jwtDecode(token);
         if (decoded.role !== "admin") {
           navigate("/dashboard");
         }
