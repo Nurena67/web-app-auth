@@ -59,10 +59,10 @@ function App() {
         <Route path="/register" element={<CreateAccount/>}/>
         <Route path="/forgot-password" element={<ForgotPasswordRequest/>}/>
         <Route path="/verify-otp" element={<ForgotPasswordVerify/>}/>
-        <Route path="/login" element={ user? <Navigate to='/dashboard'/> : <Login/> } />
-        <Route path="/dashboard" element={ user? <Dashboard/> : <Navigate to='/login' /> }/>
-        <Route path="/patients" element={ user? <Patients/> : <Navigate to='/login' />}/>
-        <Route path="/users" element={ user && user.role === 'admin' ? <Users/> : <Navigate to='/login' /> }/>
+        <Route path="/login" element={ <Login/> } />
+        <Route path="/dashboard" element={ <Dashboard/>}/>
+        <Route path="/patients" element={ <Patients/> }/>
+        <Route path="/users" element={ <Users/> }/>
         <Route path="/users/add" element={<AddUser/>}/>
         <Route path="/users/edit/:id" element={<EditUser/>}/>
         <Route path="/patients/add" element={<AddPatient/>}/>
