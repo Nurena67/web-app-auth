@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { checkLogin } from "./features/authSlice";
+import { useEffect, useState } from "react";
+import jwt_decode from "jwt-decode";
 import Login from "./components/Login";
 import Home from "./components/Home";
 import Dashboard from "./pages/Dashboard";
@@ -20,13 +19,27 @@ import ForgotPasswordVerify from "./pages/ForgotPasswordVerify";
 
 
 function App() {
-  const dispatch = useDispatch();
-  const { user, isLoading } = useSelector((state) => state.auth);
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-      dispatch(checkLogin());
-    }, [dispatch]);
+    const checkLogin = () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const decodedToken = jwt_decode(token);
+          setUser(decodedToken);
+        } catch (error) {
+          console.error("Invalid token:", error);
+          localStorage.removeItem("token");
+          setUser(null);
+        }
+      }
+      setIsLoading(false);
+    };
 
+    checkLogin();
+  }, []);
 
   if (isLoading) {
     return (

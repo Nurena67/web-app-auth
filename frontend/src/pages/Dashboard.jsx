@@ -1,18 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect , useState} from "react";
 import Layout from "./Layout";
 import Welcome from "../components/Welcome";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { isError } = useSelector((state) => state.auth);
+  const [isError, setIsError] = useState(false);
 
  
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      setIsError(true);
+    }
+  }, []);
+
+  useEffect(() => {
     if (isError) {
-      navigate("/");
+      navigate("/login");
     }
   }, [isError, navigate]);
 

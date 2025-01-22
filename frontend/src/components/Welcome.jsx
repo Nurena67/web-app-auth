@@ -1,8 +1,15 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, {useState, useEffect} from "react";
 
 const Welcome = () => {
-  const { user } = useSelector((state) => state.auth);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+  
   return (
     <div>
       <h1 className="title">Dashboard</h1>

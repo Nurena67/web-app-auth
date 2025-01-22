@@ -1,27 +1,36 @@
 import React, { useEffect } from "react";
 import Layout from "./Layout";
 import FormAddUser from "../components/FormAddUser";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { checkLogin } from "../features/authSlice";
+import jwt_decode from "jwt-decode";
 
 const AddUser = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isError, user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(checkLogin());
-  }, [dispatch]);
+    const checkLoginAndRole = () => {
+      const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    if (isError) {
-      navigate("/");
-    }
-    if (user && user.role !== "admin") {
-      navigate("/dashboard");
-    }
-  }, [isError, user, navigate]);
+      if (!token) {
+        navigate("/login"); // Redirect ke login jika token tidak ada
+        return;
+      }
+
+      try {
+        const decoded = jwt_decode(token);
+        if (decoded.role !== "admin") {
+          navigate("/dashboard");
+        }
+      } catch (error) {
+        console.error("Invalid token:", error);
+        localStorage.removeItem("token");
+        navigate("/login");
+      }
+    };
+
+    checkLoginAndRole();
+  }, [navigate]);
+
   return (
     <Layout>
       <FormAddUser />

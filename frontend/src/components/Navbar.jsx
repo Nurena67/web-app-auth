@@ -1,18 +1,13 @@
 import React from 'react'
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../logo.png";
-import { useDispatch, useSelector } from "react-redux";
-import { logout, reset } from "../features/authSlice.js";
 
 const Navbar = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
 
   const Logout = () => {
-    dispatch(logout());
-    dispatch(reset());
-    navigate("/");
+    localStorage.removeItem("token");
+    navigate("/login");
   };
   return (
     <div>

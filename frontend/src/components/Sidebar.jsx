@@ -1,18 +1,23 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { IoPerson, IoPricetag, IoHome, IoLogOut } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
-import { logout, reset } from "../features/authSlice";
+
 
 const Sidebar = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
 
   const Logout = () => {
-    dispatch(logout());
-    dispatch(reset());
-    navigate("/");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
   };
 
   return (

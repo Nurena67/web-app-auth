@@ -16,8 +16,6 @@ const Login = () => {
 
   const Auth = async (e) => {
     e.preventDefault();
-
-    setIsLoading(true);
     setErrorMessage("");
     
     if (!isValidEmail(email)) {
@@ -37,8 +35,10 @@ const Login = () => {
         password ,
      });
 
+     if (response.data.token) {
      localStorage.setItem('token', response.data.token);
-     
+     }
+
      navigate('/dashboard')
     } catch (error) {
       if (error.response) {
@@ -96,7 +96,7 @@ const Login = () => {
                 </div>
 
                 <div className="field">
-                  <button className="button is-primary is-fullwidth">
+                  <button className="button is-primary is-fullwidth" disabled={isLoading}>
                   {isLoading ? "Loading..." : "Login"}
                   </button>
                 </div>
