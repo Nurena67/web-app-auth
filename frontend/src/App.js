@@ -43,7 +43,6 @@ function App() {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
         <p>Error occurred! Please log in again.</p>
-        <Navigate to="/login" /> {/* Pengalihan ke halaman login jika terjadi error */}
       </div>
     );
   }
