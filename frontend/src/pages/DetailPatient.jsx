@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Layout from "./Layout";
 import FormDetailPatient from "../components/FormDetailPatient";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import jwt_decode from "jwt-decode";
 
 const DetailPatient = () => {
     const navigate = useNavigate();
@@ -17,7 +17,7 @@ const DetailPatient = () => {
         }
   
         try {
-          jwtDecode(token);
+          jwt_decode(token);
         } catch (error) {
           console.error("Invalid token:", error);
           localStorage.removeItem("token");

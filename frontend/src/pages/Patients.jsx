@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Layout from "./Layout";
 import PatientList from "../components/PatientList";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import jwt_decode from "jwt-decode";
 
 const Patients = () => {
     const navigate = useNavigate();
@@ -17,7 +17,7 @@ const Patients = () => {
         }
   
         try {
-          const decodedToken = jwtDecode(token);
+          const decodedToken = jwt_decode(token);
   
           if (!decodedToken.role || decodedToken.role !== "admin") {
             navigate("/dashboard");
