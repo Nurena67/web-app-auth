@@ -100,7 +100,7 @@ import NotFound from "./pages/NotFound";
 import VerifyEmail from "./components/VerifyEmail";
 import ForgotPasswordRequest from "./pages/ForgotPasswordRequest";
 import ForgotPasswordVerify from "./pages/ForgotPasswordVerify";
-import CreateAccount from './components/CreateAccount';
+// import CreateAccount from './components/CreateAccount';
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -154,7 +154,7 @@ function App() {
             element={isAuthenticated ? <Navigate to="/dashboard" /> : <Home />}
           />
           <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} />
-          <Route path="/register" element={<CreateAccount />} />
+          {/* <Route path="/register" element={<CreateAccount />} /> */}
           <Route path="/verify-email/:token" element={<VerifyEmail />} />
           <Route path="/forgot-password" element={<ForgotPasswordRequest />} />
           <Route path="/verify-otp" element={<ForgotPasswordVerify />} />
