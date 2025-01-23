@@ -84,8 +84,10 @@
 // export default App;
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import { setCredentials, logout } from "./features/AuthSlice.js"
 import Login from "./components/Login";
 import Home from "./components/Home";
 import Dashboard from "./pages/Dashboard";
@@ -100,34 +102,28 @@ import NotFound from "./pages/NotFound";
 import VerifyEmail from "./components/VerifyEmail";
 import ForgotPasswordRequest from "./pages/ForgotPasswordRequest";
 import ForgotPasswordVerify from "./pages/ForgotPasswordVerify";
-// import CreateAccount from './components/CreateAccount';
+import CreateAccount from './components/CreateAccount.jsx'
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    const checkLogin = () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          const decodedToken = jwtDecode(token);
-          setUser(decodedToken);
-        } catch (error) {
-          console.error("Invalid token:", error);
-          localStorage.removeItem("token");
-          setUser(null);
-        }
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        dispatch(setCredentials({ user: decodedToken, token })); 
+      } catch (error) {
+        console.error("Invalid token:", error);
+        dispatch(logout());
       }
-      setIsLoading(false);
-    };
+    }
+  }, [dispatch]);
 
-    checkLogin();
-  }, []);
-
-  if (isLoading) {
+  if (!user && localStorage.getItem("token")) {
     return (
       <div
         style={{
@@ -142,8 +138,6 @@ function App() {
     );
   }
 
-  const isAuthenticated = !!user;
-
   return (
     <div>
       <BrowserRouter>
@@ -154,7 +148,7 @@ function App() {
             element={isAuthenticated ? <Navigate to="/dashboard" /> : <Home />}
           />
           <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} />
-          {/* <Route path="/register" element={<CreateAccount />} /> */}
+          <Route path="/register" element={<CreateAccount />} />
           <Route path="/verify-email/:token" element={<VerifyEmail />} />
           <Route path="/forgot-password" element={<ForgotPasswordRequest />} />
           <Route path="/verify-otp" element={<ForgotPasswordVerify />} />
