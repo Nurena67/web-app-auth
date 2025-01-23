@@ -148,7 +148,7 @@ function App() {
             element={isAuthenticated ? <Navigate to="/dashboard" /> : <Home />}
           />
           <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} />
-          <Route path="/register" element={<CreateAccount />} />
+          <Route path="/register" element={ <CreateAccount/> }/>
           <Route path="/verify-email/:token" element={<VerifyEmail />} />
           <Route path="/forgot-password" element={<ForgotPasswordRequest />} />
           <Route path="/verify-otp" element={<ForgotPasswordVerify />} />
