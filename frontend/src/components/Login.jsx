@@ -110,18 +110,19 @@
 
 
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import axios from 'axios';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
       const response = await axios.post('https://web-app-auth.up.railway.app/login', {
         email,
@@ -129,15 +130,11 @@ const Login = () => {
       });
 
       const { token } = response.data;
-      localStorage.setItem('token', token);
+      login(token);
       alert('Login berhasil');
-      navigate('/dashboard'); // Arahkan ke halaman dashboard
+      navigate('/dashboard');
     } catch (err) {
-      if (err.response && err.response.data) {
-        setError(err.response.data.msg); // Tampilkan pesan error dari backend
-      } else {
-        setError('Terjadi kesalahan, silakan coba lagi.');
-      }
+      setError(err.response?.data?.msg || 'Terjadi kesalahan, silakan coba lagi.');
     }
   };
 
@@ -185,3 +182,4 @@ const Login = () => {
 };
 
 export default Login;
+
