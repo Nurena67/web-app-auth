@@ -1,17 +1,19 @@
-import React, {useState, useEffect} from "react";
-import { NavLink } from "react-router-dom";
+import React from "react";
+import { useDispatch,useSelector } from "react-redux";
+import { logout } from '../features/AuthSlice.js';
+import { NavLink , useNavigate } from "react-router-dom";
 import { IoPerson, IoPricetag, IoHome } from "react-icons/io5";
 
 
 const Sidebar = () => {
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
 
-  useEffect(() => {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      setUser(JSON.parse(userData));
-    }
-  }, []);
+  const handleLogout = () => {
+    dispatch(logout()); 
+    navigate("/login"); 
+  };
 
   return (
     <div>
@@ -41,6 +43,13 @@ const Sidebar = () => {
             </ul>
           </div>
         )}
+        <hr />
+        <button
+          className="button is-danger is-light ml-3"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
       </aside>
     </div>
   );

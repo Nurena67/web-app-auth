@@ -1,8 +1,9 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-
-import {AuthProvider} from '../src/context/AuthContext.js';
+import { Provider } from 'react-redux';
+import store from './app/store.js'
 import App from './App';
+
 import "bulma/css/bulma.css";
 import axios from "axios";
 
@@ -13,8 +14,8 @@ const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <AuthProvider>
+    <Provider store={store}>
       <App />
-    </AuthProvider>
+    </Provider>
   </React.StrictMode>
 );

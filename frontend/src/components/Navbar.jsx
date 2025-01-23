@@ -1,14 +1,18 @@
-import React from 'react'
+import React from 'react';
+import { useDispatch } from "react-redux";
+import { logout } from '../features/AuthSlice.js';
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../logo.png";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const Logout = () => {
-    localStorage.removeItem("token");
+  const handleLogout = () => {
+    dispatch(logout());
     navigate("/login");
   };
+
   return (
     <div>
         <nav
@@ -39,7 +43,7 @@ const Navbar = () => {
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                <button  onClick={Logout} className="button is-light">
+                <button  onClick={handleLogout} className="button is-light">
                   Log out
                 </button>
               </div>
@@ -49,6 +53,6 @@ const Navbar = () => {
       </nav>
     </div>
   )
-}
+};
 
 export default Navbar
