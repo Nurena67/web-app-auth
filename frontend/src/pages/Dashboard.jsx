@@ -5,23 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-  const [isError, setIsError] = useState(false);
-
- 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      setIsError(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (isError) {
-      navigate("/login");
-    }
-  }, [isError, navigate]);
+  
 
   return (
     <Layout>
