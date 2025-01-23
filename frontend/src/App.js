@@ -98,9 +98,9 @@ import DetailPatient from "./pages/DetailPatient";
 import EditPatient from "./pages/EditPatient";
 import NotFound from "./pages/NotFound";
 import VerifyEmail from "./components/VerifyEmail";
-import CreateAccount from "./components/CreateAccount";
 import ForgotPasswordRequest from "./pages/ForgotPasswordRequest";
 import ForgotPasswordVerify from "./pages/ForgotPasswordVerify";
+import CreateAccount from './components/CreateAccount';
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
